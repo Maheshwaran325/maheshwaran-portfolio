@@ -82,7 +82,7 @@ export const EXPERIENCE: ExperienceItem[] = [
     location: 'Remote',
     isCurrent: true,
     achievements: [
-      'Building the central command center for enterprise retail analytics — surfacing real-time Edge-AI inference as <strong>footfall heatmaps, demographics and ANPR</strong> that store operators can actually act on.',
+      'Building the front end and APIs for the enterprise retail-analytics command center, turning the output of the platform\u2019s AI systems into <strong>footfall heatmaps, demographics and ANPR views</strong> that store operators can act on.',
       'Built an end-to-end <strong>workflow and scheduling system</strong> on FastAPI + PostgreSQL covering recurring, one-off and milestone schedules, TAT cascades, KPI aggregation and manager approval flows.',
       'Implemented <strong>multi-tenant object storage</strong> and evidence upload on S3/MinIO with file validation, size limits, workspace-level isolation and secure reference checks.',
       'Shipped React/TypeScript features across video-management and retail-analytics products: ticketing, KPI cards, camera grids, activity search, floor plans and NVR/device integrations.',

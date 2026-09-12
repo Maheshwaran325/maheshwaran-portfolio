@@ -20,10 +20,11 @@ export const Hero: React.FC = () => (
         </h1>
 
         <p className="hero-lede">
-          I build the interfaces that make <strong>Edge-AI and computer-vision systems</strong>{' '}
-          legible to the people who run on them — real-time heatmaps, demographics and ANPR at{' '}
-          <strong>Bipolar Factory</strong>. Before that I founded <strong>Statix.pro</strong> and
-          took its products 0 → 1.
+          Full-stack in the ordinary sense: <strong>React and TypeScript</strong> on the front,{' '}
+          <strong>FastAPI and Node</strong> behind, <strong>Postgres and MySQL</strong> underneath.
+          At <strong>Bipolar Factory</strong> I build the retail-analytics command center — the
+          product layer around the AI systems, not the models themselves. Before that I founded{' '}
+          <strong>Statix.pro</strong> and took its products 0 → 1.
         </p>
 
         <div className="hero-meta">

@@ -16,3 +16,10 @@
   [headers.values]
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Client-side routes fall back to the app shell. Netlify tries static files
+# first, so /og.png and the resume PDF are unaffected.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

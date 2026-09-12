@@ -54,8 +54,9 @@ export const Projects: React.FC = () => (
                   key={l.href}
                   className={l.primary ? 'btn btn-signal' : 'btn'}
                   href={l.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  {...(l.href.startsWith('http')
+                    ? { target: '_blank', rel: 'noopener noreferrer' }
+                    : {})}
                 >
                   {l.label} <ArrowUpRight size={14} />
                 </a>

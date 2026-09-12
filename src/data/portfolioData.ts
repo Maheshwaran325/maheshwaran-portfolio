@@ -135,7 +135,7 @@ export const PROJECTS: Project[] = [
       'JWT/OAuth authentication with CASL-based permissions for fine-grained, role-specific access.',
     ],
     stack: ['React', 'TypeScript', 'Node.js', 'Express', 'MySQL', 'JWT', 'OAuth', 'CASL'],
-    links: [],
+    links: [{ label: 'Read the case study', href: '/work/institutional-platform', primary: true }],
   },
   {
     index: '02',

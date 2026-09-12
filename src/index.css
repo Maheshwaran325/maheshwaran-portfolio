@@ -420,7 +420,10 @@
 @media (max-width: 820px) {
   .contact-grid { grid-template-columns: repeat(2, 1fr); }
   .nav-links { display: none; }
-  .nav-cta .btn span { display: none; }
+  .nav-cta .btn span {
+    position: absolute; width: 1px; height: 1px;
+    overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
   .burger { display: block; }
   .log-row, .proj, .st-row, .cred { grid-template-columns: minmax(0, 1fr); gap: 1.1rem; }
   .log-when, .proj-idx { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; }

@@ -30,7 +30,7 @@ export const Nav: React.FC = () => {
   return (
     <header className="nav" data-stuck={stuck || open}>
       <div className="shell nav-in">
-        <a className="brand" href="#top" aria-label="Back to top">
+        <a className="brand" href="#top">
           <span className="brand-mark">
             <img src={mark} alt="" width={30} height={30} />
           </span>

@@ -39,16 +39,3 @@ npm run build     # tsc -b && vite build
 npm run preview   # serve the production build
 npm run lint      # oxlint
 ```
-
-## Link hygiene
-
-External URLs were verified on 2026-09-12. Two domains have lapsed and are deliberately
-**not** linked anywhere on the site:
-
-| Domain | State |
-| --- | --- |
-| `guide2profit.in` | domain expired |
-| `statix.pro` | parked (redirects to `ww38.statix.pro`) |
-
-Guide2Profit and Statix.pro point at their live Vercel deployments instead. Re-check these
-before each deploy — a dead link on a portfolio reads worse than no link.

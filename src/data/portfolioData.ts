@@ -161,7 +161,7 @@ export const PROJECTS: Project[] = [
     index: '03',
     title: 'Multi-Agent AI Debate Platform',
     period: '2025',
-    status: 'Demo',
+    status: 'Open source',
     tagline:
       'Two LLM agents argue a topic to resolution — structured argument generation, rebuttal and conflict resolution driven by prompt chaining and function calling.',
     highlights: [
@@ -171,8 +171,7 @@ export const PROJECTS: Project[] = [
     ],
     stack: ['Python', 'Streamlit', 'Nebius AI Studio', 'Function calling', 'Prompt chaining'],
     links: [
-      { label: 'Live demo', href: 'https://maheshwaran325-nebius-debate-ai-app-6opqbc.streamlit.app/', primary: true },
-      { label: 'Source', href: 'https://github.com/Maheshwaran325/Nebius-Debate-AI' },
+      { label: 'Source', href: 'https://github.com/Maheshwaran325/Nebius-Debate-AI', primary: true },
     ],
   },
   {

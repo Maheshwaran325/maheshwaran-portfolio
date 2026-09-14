@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Check, Copy, MapPin, Phone } from 'lucide-react';
 import { PERSONAL } from '../data/portfolioData';
 import { GithubIcon, LinkedinIcon, XIcon } from './Icons';
+import { ContactForm } from './ContactForm';
 
 export const Contact: React.FC = () => {
   const [copied, setCopied] = useState(false);
@@ -40,6 +41,10 @@ export const Contact: React.FC = () => {
               {copied ? 'Copied' : 'Copy address'}
             </button>
           </div>
+        </div>
+
+        <div className="rise">
+          <ContactForm />
         </div>
 
         <div className="contact-grid rise">

@@ -1,6 +1,7 @@
 import React from 'react';
 import { STACK } from '../data/portfolioData';
 import { Section } from './Section';
+import { GithubStats } from './GithubStats';
 
 export const Stack: React.FC = () => (
   <Section
@@ -20,5 +21,7 @@ export const Stack: React.FC = () => (
         </div>
       </div>
     ))}
+
+    <GithubStats />
   </Section>
 );

@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/emit-route-html.mjs",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sync:github": "node scripts/sync-github.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.45.0",

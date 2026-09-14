@@ -13,11 +13,17 @@ import { useReveal } from './hooks/useReveal';
 
 export const CASE_STUDY_PATH = '/work/institutional-platform';
 
-/** Two pages don't justify a router dependency. */
-function usePath(): string {
-  const [path, setPath] = useState(() => window.location.pathname.replace(/\/+$/, '') || '/');
+const normalize = (p: string): string => p.replace(/\/+$/, '') || '/';
+
+/**
+ * Two pages don't justify a router dependency. `initial` is supplied when
+ * prerendering, where there is no `window`; the browser reads its own URL and
+ * arrives at the same value, so hydration matches.
+ */
+function usePath(initial?: string): string {
+  const [path, setPath] = useState(() => initial ?? normalize(window.location.pathname));
   useEffect(() => {
-    const onPop = () => setPath(window.location.pathname.replace(/\/+$/, '') || '/');
+    const onPop = () => setPath(normalize(window.location.pathname));
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
   }, []);
@@ -45,8 +51,8 @@ const TITLES: Record<string, string> = {
   [CASE_STUDY_PATH]: 'Institutional Finance Platform — Case study — Maheshwaran A K',
 };
 
-export const App: React.FC = () => {
-  const path = usePath();
+export const App: React.FC<{ path?: string }> = ({ path: initial }) => {
+  const path = usePath(initial);
 
   useReveal();
 

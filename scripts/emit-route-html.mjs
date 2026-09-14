@@ -1,16 +1,47 @@
 /**
- * The app sets document.title client-side, which crawlers and link unfurlers
- * never run. So for each extra route we emit a real HTML file with its own
- * metadata. Netlify matches static files before the SPA redirect, so these are
- * served directly; React then renders the same route as usual.
+ * Turns the client bundle into real, readable HTML.
+ *
+ * Two reasons this exists. The app sets document.title client-side, which
+ * crawlers and link unfurlers never run, so each route needs its own metadata.
+ * And AI crawlers (GPTBot, ClaudeBot, PerplexityBot) do not execute JavaScript
+ * at all, so a client-only render leaves them an empty <div id="root">. Both
+ * routes are therefore rendered to HTML here and hydrated in the browser.
+ *
+ * Netlify matches static files before redirect rules, so these are served
+ * directly and the catch-all only ever sees genuinely unknown URLs.
  */
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 
 const DIST = 'dist';
 const SITE = 'https://maheshwaran.dev';
+const TODAY = new Date().toISOString().slice(0, 10);
+
+const { render } = await import('../dist-ssr/entry-server.js');
+
+/**
+ * Date the route's content last changed, so sitemap lastmod describes the
+ * content rather than the deploy. Falls back to today when git is unavailable
+ * or the file's history sits outside a shallow clone.
+ */
+function lastModified(sources) {
+  try {
+    const out = execFileSync('git', ['log', '-1', '--format=%cs', '--', ...sources], {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+    return /^\d{4}-\d{2}-\d{2}$/.test(out) ? out : TODAY;
+  } catch {
+    return TODAY;
+  }
+}
 
 const ROUTES = [
+  {
+    path: '',
+    sources: ['index.html', 'src/components', 'src/data/portfolioData.ts'],
+  },
   {
     path: 'work/institutional-platform',
     title: 'Institutional Finance & Research Platform — Case study — Maheshwaran A K',
@@ -18,10 +49,14 @@ const ROUTES = [
       'How I designed and built a multi-tenant ERP running budgeting, expenditure and settlement for a 39-department institution: one configurable approval engine, roles as data, and an audit trail money can be traced through.',
     image: `${SITE}/og-case-study.png`,
     breadcrumb: 'Institutional Finance & Research Platform',
+    sources: ['src/pages/CaseStudy.tsx', 'src/data/caseStudyData.ts'],
   },
 ];
 
 const shell = await readFile(join(DIST, 'index.html'), 'utf8');
+
+const ROOT = '<div id="root"></div>';
+if (!shell.includes(ROOT)) throw new Error('no empty #root in shell — did the build change?');
 
 /** Replace the content of a meta tag, matching either attribute order. */
 function setMeta(html, kind, key, value) {
@@ -30,53 +65,62 @@ function setMeta(html, kind, key, value) {
   return html.replace(re, `$1${value}$2`);
 }
 
+/** Drop the prerendered markup into the shell's root node. */
+function withMarkup(html, path) {
+  return html.replace(ROOT, `<div id="root">${render(path)}</div>`);
+}
+
 for (const route of ROUTES) {
-  let html = shell;
+  const url = `${SITE}/${route.path}`;
+  let html = withMarkup(shell, `/${route.path}`);
 
-  const titleRe = /<title>[^<]*<\/title>/i;
-  if (!titleRe.test(html)) throw new Error('no <title> in shell');
-  html = html.replace(titleRe, `<title>${route.title}</title>`);
+  // The homepage's metadata already lives in the shell; extra routes override.
+  if (route.title) {
+    const titleRe = /<title>[^<]*<\/title>/i;
+    if (!titleRe.test(html)) throw new Error('no <title> in shell');
+    html = html.replace(titleRe, `<title>${route.title}</title>`);
 
-  html = setMeta(html, 'name', 'description', route.description);
-  html = setMeta(html, 'property', 'og:title', route.title);
-  html = setMeta(html, 'property', 'og:description', route.description);
-  html = setMeta(html, 'property', 'og:url', `${SITE}/${route.path}`);
-  html = setMeta(html, 'property', 'og:image', route.image);
-  html = setMeta(html, 'name', 'twitter:title', route.title);
-  html = setMeta(html, 'name', 'twitter:description', route.description);
-  html = setMeta(html, 'name', 'twitter:image', route.image);
+    html = setMeta(html, 'name', 'description', route.description);
+    html = setMeta(html, 'property', 'og:title', route.title);
+    html = setMeta(html, 'property', 'og:description', route.description);
+    html = setMeta(html, 'property', 'og:url', url);
+    html = setMeta(html, 'property', 'og:image', route.image);
+    html = setMeta(html, 'name', 'twitter:title', route.title);
+    html = setMeta(html, 'name', 'twitter:description', route.description);
+    html = setMeta(html, 'name', 'twitter:image', route.image);
 
-  const canonicalRe = /(<link\s+rel="canonical"\s+href=")[^"]*(")/i;
-  if (!canonicalRe.test(html)) throw new Error('no canonical link in shell');
-  html = html.replace(canonicalRe, `$1${SITE}/${route.path}$2`);
+    const canonicalRe = /(<link\s+rel="canonical"\s+href=")[^"]*(")/i;
+    if (!canonicalRe.test(html)) throw new Error('no canonical link in shell');
+    html = html.replace(canonicalRe, `$1${url}$2`);
 
-  // The shell's Person block describes the author; add what this page itself is.
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'Article',
-        headline: route.title,
-        description: route.description,
-        image: route.image,
-        url: `${SITE}/${route.path}`,
-        author: { '@type': 'Person', name: 'Maheshwaran A K', url: `${SITE}/` },
-        publisher: { '@type': 'Person', name: 'Maheshwaran A K', url: `${SITE}/` },
-        inLanguage: 'en',
-      },
-      {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Maheshwaran A K', item: `${SITE}/` },
-          { '@type': 'ListItem', position: 2, name: route.breadcrumb },
-        ],
-      },
-    ],
-  };
-  html = html.replace(
-    '</head>',
-    `  <script type="application/ld+json">\n${JSON.stringify(jsonLd, null, 2)}\n    </script>\n  </head>`,
-  );
+    // The shell's Person block describes the author; add what this page is.
+    const jsonLd = {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'Article',
+          headline: route.title,
+          description: route.description,
+          image: route.image,
+          url,
+          author: { '@type': 'Person', name: 'Maheshwaran A K', url: `${SITE}/` },
+          publisher: { '@type': 'Person', name: 'Maheshwaran A K', url: `${SITE}/` },
+          inLanguage: 'en',
+        },
+        {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Maheshwaran A K', item: `${SITE}/` },
+            { '@type': 'ListItem', position: 2, name: route.breadcrumb },
+          ],
+        },
+      ],
+    };
+    html = html.replace(
+      '</head>',
+      `  <script type="application/ld+json">\n${JSON.stringify(jsonLd, null, 2)}\n    </script>\n  </head>`,
+    );
+  }
 
   const out = join(DIST, route.path, 'index.html');
   await mkdir(dirname(out), { recursive: true });
@@ -85,11 +129,11 @@ for (const route of ROUTES) {
 }
 
 // --- 404 --------------------------------------------------------------------
-// Without this the SPA rule answers every unknown URL with the homepage at
-// status 200, which Google reads as a soft 404 and as endless duplicates of /.
+// Without this the catch-all would answer every unknown URL with the homepage
+// at status 200, which Google reads as a soft 404 and as duplicates of /.
 {
-  let html = shell;
   const title = 'Page not found — Maheshwaran A K';
+  let html = withMarkup(shell, '/404');
   html = html.replace(/<title>[^<]*<\/title>/i, `<title>${title}</title>`);
   html = setMeta(html, 'name', 'description', 'This page does not exist.');
   html = setMeta(html, 'property', 'og:title', title);
@@ -102,21 +146,17 @@ for (const route of ROUTES) {
 }
 
 // --- sitemap covering every route -------------------------------------------
-const urls = ['', ...ROUTES.map((r) => r.path)];
-const today = new Date().toISOString().slice(0, 10);
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls
-  .map(
-    (u) => `  <url>
-    <loc>${SITE}/${u}</loc>
-    <lastmod>${today}</lastmod>
+${ROUTES.map(
+  (r) => `  <url>
+    <loc>${SITE}/${r.path}</loc>
+    <lastmod>${lastModified(r.sources)}</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>${u === '' ? '1.0' : '0.8'}</priority>
+    <priority>${r.path === '' ? '1.0' : '0.8'}</priority>
   </url>`,
-  )
-  .join('\n')}
+).join('\n')}
 </urlset>
 `;
 await writeFile(join(DIST, 'sitemap.xml'), sitemap, 'utf8');
-console.log(`sitemap.xml lists ${urls.length} urls`);
+console.log(`sitemap.xml lists ${ROUTES.length} urls`);

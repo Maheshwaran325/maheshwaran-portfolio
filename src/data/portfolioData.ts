@@ -139,6 +139,23 @@ export const PROJECTS: Project[] = [
   },
   {
     index: '02',
+    title: 'Land2Build',
+    period: '2026',
+    status: 'Open source',
+    tagline:
+      'A construction planner for Indian residential builds: describe a plot and a brief, and it generates a walkable 3D model, a costed material list and a weather-risk view — entirely in the browser.',
+    highlights: [
+      'Floor plans are <strong>generated, not modelled</strong> — binary space partitioning recursively splits the footprint into rooms, with aspect-ratio limits so nothing degenerates into a corridor.',
+      'Seven house types (bungalow, villa, courtyard, duplex, L-shaped and more) extruded into <strong>walkable 3D</strong> with React Three Fiber, dimension lines and room labels.',
+      'An LLM turns a plain-language brief into a <strong>typed building config</strong> — spans, floors, roof and wall materials — which then drives the geometry and an India-specific cost estimate.',
+      '<strong>Offline-first</strong>: projects, materials and costings persist to IndexedDB through Dexie, so the whole tool runs with no backend.',
+      'Leaflet mapping for the plot and Open-Meteo forecasts for a build-season weather-risk view.',
+    ],
+    stack: ['React', 'TypeScript', 'Three.js', 'React Three Fiber', 'Dexie / IndexedDB', 'Leaflet', 'Open-Meteo', 'Vite'],
+    links: [{ label: 'Source', href: 'https://github.com/Maheshwaran325/Land2Build', primary: true }],
+  },
+  {
+    index: '03',
     title: 'Guide2Profit',
     period: '2024',
     status: 'Shelved',
@@ -157,23 +174,6 @@ export const PROJECTS: Project[] = [
       { label: 'Read the post-mortem', href: '/work/guide2profit', primary: true },
       { label: 'Source', href: 'https://github.com/Maheshwaran325/guidetoprofit' },
     ],
-  },
-  {
-    index: '03',
-    title: 'Land2Build',
-    period: '2026',
-    status: 'Open source',
-    tagline:
-      'A construction planner for Indian residential builds: describe a plot and a brief, and it generates a walkable 3D model, a costed material list and a weather-risk view — entirely in the browser.',
-    highlights: [
-      'Floor plans are <strong>generated, not modelled</strong> — binary space partitioning recursively splits the footprint into rooms, with aspect-ratio limits so nothing degenerates into a corridor.',
-      'Seven house types (bungalow, villa, courtyard, duplex, L-shaped and more) extruded into <strong>walkable 3D</strong> with React Three Fiber, dimension lines and room labels.',
-      'An LLM turns a plain-language brief into a <strong>typed building config</strong> — spans, floors, roof and wall materials — which then drives the geometry and an India-specific cost estimate.',
-      '<strong>Offline-first</strong>: projects, materials and costings persist to IndexedDB through Dexie, so the whole tool runs with no backend.',
-      'Leaflet mapping for the plot and Open-Meteo forecasts for a build-season weather-risk view.',
-    ],
-    stack: ['React', 'TypeScript', 'Three.js', 'React Three Fiber', 'Dexie / IndexedDB', 'Leaflet', 'Open-Meteo', 'Vite'],
-    links: [{ label: 'Source', href: 'https://github.com/Maheshwaran325/Land2Build', primary: true }],
   },
   {
     index: '04',

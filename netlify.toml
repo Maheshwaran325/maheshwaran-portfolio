@@ -17,6 +17,14 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
+# Retire the Netlify subdomain: it stays live as a deploy target, so force a
+# 301 to the real domain. Must precede the SPA rule, which matches everything.
+[[redirects]]
+  from = "https://maheshwaran325-portfolio.netlify.app/*"
+  to = "https://maheshwaran.dev/:splat"
+  status = 301
+  force = true
+
 # Client-side routes fall back to the app shell. Netlify tries static files
 # first, so /og.png and the resume PDF are unaffected.
 [[redirects]]

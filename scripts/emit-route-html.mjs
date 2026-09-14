@@ -8,7 +8,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 
 const DIST = 'dist';
-const SITE = 'https://maheshwaran325-portfolio.netlify.app';
+const SITE = 'https://maheshwaran.dev';
 
 const ROUTES = [
   {

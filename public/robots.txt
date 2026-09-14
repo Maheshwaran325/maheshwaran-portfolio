@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://maheshwaran325-portfolio.netlify.app/sitemap.xml
+Sitemap: https://maheshwaran.dev/sitemap.xml

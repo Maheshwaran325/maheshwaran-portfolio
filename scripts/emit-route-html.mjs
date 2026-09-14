@@ -88,7 +88,6 @@ function personGraph() {
         image: `${SITE}/portrait.webp`,
         url: `${SITE}/`,
         email: `mailto:${PERSONAL.email}`,
-        telephone: PERSONAL.phone,
         address: {
           '@type': 'PostalAddress',
           addressLocality: 'Salem',

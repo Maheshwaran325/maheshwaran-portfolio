@@ -12,6 +12,7 @@ export const Hero: React.FC = () => (
         </p>
 
         <h1>
+          <span className="hero-name">{PERSONAL.name}</span>
           AI-native
           <br />
           full-stack

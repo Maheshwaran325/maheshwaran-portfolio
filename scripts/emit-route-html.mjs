@@ -18,7 +18,7 @@ const DIST = 'dist';
 const SITE = 'https://maheshwaran.dev';
 const TODAY = new Date().toISOString().slice(0, 10);
 
-const { render } = await import('../dist-ssr/entry-server.js');
+const { render, PERSONAL, EXPERIENCE, PROJECTS } = await import('../dist-ssr/entry-server.js');
 
 /**
  * Date the route's content last changed, so sitemap lastmod describes the
@@ -53,6 +53,79 @@ const ROUTES = [
   },
 ];
 
+/**
+ * Structured data for the homepage, built from the same data the page renders.
+ * ProfilePage tells Google and LLM crawlers that this page *is* the person,
+ * rather than merely mentioning one; the graph gives them facts to extract.
+ */
+function personGraph() {
+  const id = `${SITE}/#person`;
+  const strip = (html) => html.replace(/<[^>]+>/g, '');
+
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'ProfilePage',
+        '@id': `${SITE}/#profile`,
+        url: `${SITE}/`,
+        name: `${PERSONAL.name} — ${PERSONAL.role}`,
+        dateModified: lastModified(ROUTES[0].sources),
+        mainEntity: { '@id': id },
+        inLanguage: 'en',
+      },
+      {
+        '@type': 'Person',
+        '@id': id,
+        name: PERSONAL.name,
+        alternateName: ['A K Maheshwaran', 'Maheshwaran K', 'Maheshwaran'],
+        description:
+          `${PERSONAL.name} is an ${PERSONAL.role} based in ${PERSONAL.location}. ` +
+          `He works at ${PERSONAL.company} building the product layer around retail-analytics ` +
+          `AI systems, and previously founded Statix.pro. He builds React and TypeScript ` +
+          `front ends over FastAPI, Node and Postgres.`,
+        jobTitle: EXPERIENCE[0].role,
+        image: `${SITE}/portrait.webp`,
+        url: `${SITE}/`,
+        email: `mailto:${PERSONAL.email}`,
+        telephone: PERSONAL.phone,
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Salem',
+          addressRegion: 'Tamil Nadu',
+          addressCountry: 'IN',
+        },
+        worksFor: { '@type': 'Organization', name: PERSONAL.company },
+        alumniOf: {
+          '@type': 'CollegeOrUniversity',
+          name: 'K.S. Rangasamy College of Technology',
+        },
+        knowsAbout: [...new Set(EXPERIENCE.flatMap((job) => job.stack))],
+        hasOccupation: {
+          '@type': 'Occupation',
+          name: 'Full-Stack Software Engineer',
+          occupationLocation: { '@type': 'City', name: 'Salem' },
+          skills: [...new Set(EXPERIENCE.flatMap((job) => job.stack))].join(', '),
+        },
+        sameAs: [PERSONAL.github, PERSONAL.linkedin, PERSONAL.x],
+      },
+      ...PROJECTS.map((project) => ({
+        '@type': 'CreativeWork',
+        name: project.title,
+        description: strip(project.tagline),
+        author: { '@id': id },
+        creator: { '@id': id },
+        keywords: project.stack.join(', '),
+        ...(project.links?.[0]?.href?.startsWith('http')
+          ? { url: project.links[0].href }
+          : project.links?.[0]
+            ? { url: `${SITE}${project.links[0].href}` }
+            : {}),
+      })),
+    ],
+  };
+}
+
 const shell = await readFile(join(DIST, 'index.html'), 'utf8');
 
 const ROOT = '<div id="root"></div>';
@@ -63,6 +136,14 @@ function setMeta(html, kind, key, value) {
   const re = new RegExp(`(<meta\\s+${kind}="${key}"\\s+content=")[^"]*(")`, 'i');
   if (!re.test(html)) throw new Error(`meta ${kind}="${key}" not found in shell`);
   return html.replace(re, `$1${value}$2`);
+}
+
+/** Append a JSON-LD block to the document head. */
+function addJsonLd(html, data) {
+  return html.replace(
+    '</head>',
+    `  <script type="application/ld+json">\n${JSON.stringify(data, null, 2)}\n    </script>\n  </head>`,
+  );
 }
 
 /** Drop the prerendered markup into the shell's root node. */
@@ -103,24 +184,23 @@ for (const route of ROUTES) {
           description: route.description,
           image: route.image,
           url,
-          author: { '@type': 'Person', name: 'Maheshwaran A K', url: `${SITE}/` },
-          publisher: { '@type': 'Person', name: 'Maheshwaran A K', url: `${SITE}/` },
+          author: { '@type': 'Person', '@id': `${SITE}/#person`, name: PERSONAL.name },
+          publisher: { '@id': `${SITE}/#person` },
           inLanguage: 'en',
         },
         {
           '@type': 'BreadcrumbList',
           itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Maheshwaran A K', item: `${SITE}/` },
+            { '@type': 'ListItem', position: 1, name: PERSONAL.name, item: `${SITE}/` },
             { '@type': 'ListItem', position: 2, name: route.breadcrumb },
           ],
         },
       ],
     };
-    html = html.replace(
-      '</head>',
-      `  <script type="application/ld+json">\n${JSON.stringify(jsonLd, null, 2)}\n    </script>\n  </head>`,
-    );
+    html = addJsonLd(html, jsonLd);
   }
+
+  if (!route.title) html = addJsonLd(html, personGraph());
 
   const out = join(DIST, route.path, 'index.html');
   await mkdir(dirname(out), { recursive: true });

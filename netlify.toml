@@ -16,18 +16,22 @@
   [headers.values]
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort()"
 
 # Retire the Netlify subdomain: it stays live as a deploy target, so force a
-# 301 to the real domain. Must precede the SPA rule, which matches everything.
+# 301 to the real domain. Must precede the catch-all below, which matches all.
 [[redirects]]
   from = "https://maheshwaran325-portfolio.netlify.app/*"
   to = "https://maheshwaran.dev/:splat"
   status = 301
   force = true
 
-# Client-side routes fall back to the app shell. Netlify tries static files
-# first, so /og.png and the resume PDF are unaffected.
+# Every route is emitted as a real HTML file at build time, and Netlify serves
+# static files before consulting these rules — so this catches only genuinely
+# unknown URLs, and answers them with a real 404 rather than the homepage.
 [[redirects]]
   from = "/*"
-  to = "/index.html"
-  status = 200
+  to = "/404.html"
+  status = 404

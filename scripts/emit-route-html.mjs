@@ -17,6 +17,7 @@ const ROUTES = [
     description:
       'How I designed and built a multi-tenant ERP running budgeting, expenditure and settlement for a 39-department institution: one configurable approval engine, roles as data, and an audit trail money can be traced through.',
     image: `${SITE}/og-case-study.png`,
+    breadcrumb: 'Institutional Finance & Research Platform',
   },
 ];
 
@@ -49,10 +50,55 @@ for (const route of ROUTES) {
   if (!canonicalRe.test(html)) throw new Error('no canonical link in shell');
   html = html.replace(canonicalRe, `$1${SITE}/${route.path}$2`);
 
+  // The shell's Person block describes the author; add what this page itself is.
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Article',
+        headline: route.title,
+        description: route.description,
+        image: route.image,
+        url: `${SITE}/${route.path}`,
+        author: { '@type': 'Person', name: 'Maheshwaran A K', url: `${SITE}/` },
+        publisher: { '@type': 'Person', name: 'Maheshwaran A K', url: `${SITE}/` },
+        inLanguage: 'en',
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Maheshwaran A K', item: `${SITE}/` },
+          { '@type': 'ListItem', position: 2, name: route.breadcrumb },
+        ],
+      },
+    ],
+  };
+  html = html.replace(
+    '</head>',
+    `  <script type="application/ld+json">\n${JSON.stringify(jsonLd, null, 2)}\n    </script>\n  </head>`,
+  );
+
   const out = join(DIST, route.path, 'index.html');
   await mkdir(dirname(out), { recursive: true });
   await writeFile(out, html, 'utf8');
   console.log(`emitted ${out}`);
+}
+
+// --- 404 --------------------------------------------------------------------
+// Without this the SPA rule answers every unknown URL with the homepage at
+// status 200, which Google reads as a soft 404 and as endless duplicates of /.
+{
+  let html = shell;
+  const title = 'Page not found — Maheshwaran A K';
+  html = html.replace(/<title>[^<]*<\/title>/i, `<title>${title}</title>`);
+  html = setMeta(html, 'name', 'description', 'This page does not exist.');
+  html = setMeta(html, 'property', 'og:title', title);
+  html = setMeta(html, 'name', 'twitter:title', title);
+  // A 404 must not claim a canonical URL, and must not be indexed.
+  html = html.replace(/<link\s+rel="canonical"[^>]*>/i, '<meta name="robots" content="noindex" />');
+
+  await writeFile(join(DIST, '404.html'), html, 'utf8');
+  console.log('emitted dist/404.html');
 }
 
 // --- sitemap covering every route -------------------------------------------

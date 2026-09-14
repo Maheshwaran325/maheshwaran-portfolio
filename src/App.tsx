@@ -8,6 +8,7 @@ import { Stack } from './components/Stack';
 import { Credentials } from './components/Credentials';
 import { Contact } from './components/Contact';
 import { CaseStudy } from './pages/CaseStudy';
+import { NotFound } from './pages/NotFound';
 import { useReveal } from './hooks/useReveal';
 
 export const CASE_STUDY_PATH = '/work/institutional-platform';
@@ -38,19 +39,24 @@ const Portfolio: React.FC = () => (
   </>
 );
 
+/** Every real route is a static file; anything else is served as a 404. */
+const TITLES: Record<string, string> = {
+  '/': 'Maheshwaran A K — AI-Native Full-Stack Engineer',
+  [CASE_STUDY_PATH]: 'Institutional Finance Platform — Case study — Maheshwaran A K',
+};
+
 export const App: React.FC = () => {
   const path = usePath();
-  const isCaseStudy = path === CASE_STUDY_PATH;
 
   useReveal();
 
   useEffect(() => {
-    document.title = isCaseStudy
-      ? 'Institutional Finance Platform — Case study — Maheshwaran A K'
-      : 'Maheshwaran A K — AI-Native Full-Stack Engineer';
-  }, [isCaseStudy]);
+    document.title = TITLES[path] ?? 'Page not found — Maheshwaran A K';
+  }, [path]);
 
-  return isCaseStudy ? <CaseStudy /> : <Portfolio />;
+  if (path === CASE_STUDY_PATH) return <CaseStudy />;
+  if (path === '/') return <Portfolio />;
+  return <NotFound />;
 };
 
 export default App;

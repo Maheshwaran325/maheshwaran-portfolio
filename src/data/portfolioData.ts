@@ -152,7 +152,10 @@ export const PROJECTS: Project[] = [
       'Leaflet mapping for the plot and Open-Meteo forecasts for a build-season weather-risk view.',
     ],
     stack: ['React', 'TypeScript', 'Three.js', 'React Three Fiber', 'Dexie / IndexedDB', 'Leaflet', 'Open-Meteo', 'Vite'],
-    links: [{ label: 'Source', href: 'https://github.com/Maheshwaran325/Land2Build', primary: true }],
+    links: [
+      { label: 'Read the case study', href: '/work/land2build', primary: true },
+      { label: 'Source', href: 'https://github.com/Maheshwaran325/Land2Build' },
+    ],
   },
   {
     index: '03',

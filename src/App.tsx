@@ -9,11 +9,13 @@ import { Credentials } from './components/Credentials';
 import { Contact } from './components/Contact';
 import { CaseStudy } from './pages/CaseStudy';
 import { Guide2Profit } from './pages/Guide2Profit';
+import { Land2Build } from './pages/Land2Build';
 import { NotFound } from './pages/NotFound';
 import { useReveal } from './hooks/useReveal';
 
 export const CASE_STUDY_PATH = '/work/institutional-platform';
 export const GUIDE2PROFIT_PATH = '/work/guide2profit';
+export const LAND2BUILD_PATH = '/work/land2build';
 
 const normalize = (p: string): string => p.replace(/\/+$/, '') || '/';
 
@@ -52,6 +54,7 @@ const TITLES: Record<string, string> = {
   '/': 'Maheshwaran A K — AI-Native Full-Stack Engineer',
   [CASE_STUDY_PATH]: 'Institutional Finance Platform — Case study — Maheshwaran A K',
   [GUIDE2PROFIT_PATH]: 'Guide2Profit — Post-mortem — Maheshwaran A K',
+  [LAND2BUILD_PATH]: 'Land2Build — Case study — Maheshwaran A K',
 };
 
 export const App: React.FC<{ path?: string }> = ({ path: initial }) => {
@@ -65,6 +68,7 @@ export const App: React.FC<{ path?: string }> = ({ path: initial }) => {
 
   if (path === CASE_STUDY_PATH) return <CaseStudy />;
   if (path === GUIDE2PROFIT_PATH) return <Guide2Profit />;
+  if (path === LAND2BUILD_PATH) return <Land2Build />;
   if (path === '/') return <Portfolio />;
   return <NotFound />;
 };

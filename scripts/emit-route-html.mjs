@@ -60,6 +60,15 @@ const ROUTES = [
     breadcrumb: 'Guide2Profit',
     sources: ['src/pages/Guide2Profit.tsx', 'src/data/guide2profitData.ts'],
   },
+  {
+    path: 'work/land2build',
+    title: 'Land2Build — Generated floor plans — Case study — Maheshwaran A K',
+    description:
+      'A construction planner that turns a plot and a sentence into a walkable 3D house. The language model parses the brief; a deterministic binary space partition generates the floor plan — which means the layout can be tested, and it is.',
+    image: `${SITE}/og.png`,
+    breadcrumb: 'Land2Build',
+    sources: ['src/pages/Land2Build.tsx', 'src/data/land2buildData.ts'],
+  },
 ];
 
 /**

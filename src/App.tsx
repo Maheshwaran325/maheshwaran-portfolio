@@ -8,10 +8,12 @@ import { Stack } from './components/Stack';
 import { Credentials } from './components/Credentials';
 import { Contact } from './components/Contact';
 import { CaseStudy } from './pages/CaseStudy';
+import { Guide2Profit } from './pages/Guide2Profit';
 import { NotFound } from './pages/NotFound';
 import { useReveal } from './hooks/useReveal';
 
 export const CASE_STUDY_PATH = '/work/institutional-platform';
+export const GUIDE2PROFIT_PATH = '/work/guide2profit';
 
 const normalize = (p: string): string => p.replace(/\/+$/, '') || '/';
 
@@ -49,6 +51,7 @@ const Portfolio: React.FC = () => (
 const TITLES: Record<string, string> = {
   '/': 'Maheshwaran A K — AI-Native Full-Stack Engineer',
   [CASE_STUDY_PATH]: 'Institutional Finance Platform — Case study — Maheshwaran A K',
+  [GUIDE2PROFIT_PATH]: 'Guide2Profit — Case study — Maheshwaran A K',
 };
 
 export const App: React.FC<{ path?: string }> = ({ path: initial }) => {
@@ -61,6 +64,7 @@ export const App: React.FC<{ path?: string }> = ({ path: initial }) => {
   }, [path]);
 
   if (path === CASE_STUDY_PATH) return <CaseStudy />;
+  if (path === GUIDE2PROFIT_PATH) return <Guide2Profit />;
   if (path === '/') return <Portfolio />;
   return <NotFound />;
 };

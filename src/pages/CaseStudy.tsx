@@ -1,50 +1,17 @@
 import React from 'react';
-import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { BUILD, CASE, CHAPTERS, SCALE, STAGES } from '../data/caseStudyData';
-import { PERSONAL } from '../data/portfolioData';
 import { ApprovalDiagram, LayerDiagram } from '../components/Diagrams';
-
-const Chapter: React.FC<{ n: number; children: React.ReactNode }> = ({ n, children }) => {
-  const c = CHAPTERS[n];
-  return (
-    <section className="section">
-      <div className="shell">
-        <header className="sec-head rise">
-          <p className="sec-index">
-            <b>{c.index}</b> {c.label}
-          </p>
-          <h2 className="sec-title">{c.title}</h2>
-        </header>
-        {children}
-      </div>
-    </section>
-  );
-};
-
-const Figures: React.FC<{ rows: { v: string; l: string; s: string }[] }> = ({ rows }) => (
-  <div className="metrics">
-    {rows.map((m, i) => (
-      <div className="metric rise" key={m.l} data-delay={i * 70}>
-        <p className="metric-v">{m.v}</p>
-        <p className="metric-l">{m.l}</p>
-        <p className="metric-s">{m.s}</p>
-      </div>
-    ))}
-  </div>
-);
+import {
+  CaseStudyBar,
+  CaseStudyCta,
+  CaseStudyFooter,
+  Chapter,
+  Figures,
+} from '../components/CaseStudyParts';
 
 export const CaseStudy: React.FC = () => (
   <>
-    <header className="cs-bar">
-      <div className="shell nav-in">
-        <a className="btn" href="/">
-          <ArrowLeft size={14} /> Back to portfolio
-        </a>
-        <a className="btn btn-signal" href={`mailto:${PERSONAL.email}`}>
-          Get in touch
-        </a>
-      </div>
-    </header>
+    <CaseStudyBar />
 
     <main>
       {/* ---------- hero ---------- */}
@@ -85,7 +52,7 @@ export const CaseStudy: React.FC = () => (
       </section>
 
       {/* ---------- 01 context ---------- */}
-      <Chapter n={0}>
+      <Chapter c={CHAPTERS[0]}>
         <div className="prose rise">
           <p>
             A 39-department institution ran its budgeting, expenditure and research funding on
@@ -108,7 +75,7 @@ export const CaseStudy: React.FC = () => (
       </Chapter>
 
       {/* ---------- 02 approval engine ---------- */}
-      <Chapter n={1}>
+      <Chapter c={CHAPTERS[1]}>
         <div className="prose rise">
           <p>
             Budget proposals, expenditure claims, advances, settlements and journal submissions
@@ -146,7 +113,7 @@ export const CaseStudy: React.FC = () => (
       </Chapter>
 
       {/* ---------- 03 access control ---------- */}
-      <Chapter n={2}>
+      <Chapter c={CHAPTERS[2]}>
         <div className="prose rise">
           <p>
             The obvious implementation is an enum of roles in the codebase. It is also the one
@@ -173,7 +140,7 @@ export const CaseStudy: React.FC = () => (
       </Chapter>
 
       {/* ---------- 04 data model ---------- */}
-      <Chapter n={3}>
+      <Chapter c={CHAPTERS[3]}>
         <div className="prose rise">
           <p>
             Finance software is judged on whether it can explain itself a year later. The schema
@@ -207,7 +174,7 @@ export const CaseStudy: React.FC = () => (
       </Chapter>
 
       {/* ---------- 05 outcome ---------- */}
-      <Chapter n={4}>
+      <Chapter c={CHAPTERS[4]}>
         <div className="prose rise">
           <p>
             The platform has run continuously for <strong>14+ months</strong> without a rewrite.
@@ -224,7 +191,7 @@ export const CaseStudy: React.FC = () => (
       </Chapter>
 
       {/* ---------- 06 retrospective ---------- */}
-      <Chapter n={5}>
+      <Chapter c={CHAPTERS[5]}>
         <div className="prose rise">
           <p>
             <strong>I would put the workflow engine behind a state machine definition sooner.</strong>{' '}
@@ -246,33 +213,12 @@ export const CaseStudy: React.FC = () => (
         </div>
       </Chapter>
 
-      {/* ---------- cta ---------- */}
-      <section className="section">
-        <div className="shell">
-          <h2 className="sec-title rise" style={{ maxWidth: '18ch' }}>
-            Want the detail?
-          </h2>
-          <p className="sec-note rise">
-            The source is closed, but I am happy to walk through the architecture, the schema
-            decisions or the approval engine in conversation.
-          </p>
-          <div className="hero-actions rise" style={{ marginTop: '2rem' }}>
-            <a className="btn btn-signal btn-lg" href={`mailto:${PERSONAL.email}`}>
-              Email me <ArrowUpRight size={15} />
-            </a>
-            <a className="btn btn-lg" href="/">
-              <ArrowLeft size={15} /> Back to portfolio
-            </a>
-          </div>
-        </div>
-      </section>
+      <CaseStudyCta
+        title="Want the detail?"
+        note="The source is closed, but I am happy to walk through the architecture, the schema decisions or the approval engine in conversation."
+      />
 
-      <div className="shell">
-        <footer className="footer">
-          <span>© {new Date().getFullYear()} Maheshwaran A K</span>
-          <span>Client unnamed by request</span>
-        </footer>
-      </div>
+      <CaseStudyFooter note="Client unnamed by request" />
     </main>
   </>
 );

@@ -153,7 +153,8 @@ export const PROJECTS: Project[] = [
     ],
     stack: ['React', 'Node.js', 'Express', 'Supabase', 'PostgreSQL', 'Vercel'],
     links: [
-      { label: 'Live app', href: 'https://cashcompassclient-git-main-maheshwaran325s-projects.vercel.app/', primary: true },
+      { label: 'Read the case study', href: '/work/guide2profit', primary: true },
+      { label: 'Live app', href: 'https://cashcompassclient-git-main-maheshwaran325s-projects.vercel.app/' },
       { label: 'Source', href: 'https://github.com/Maheshwaran325/guidetoprofit' },
     ],
   },

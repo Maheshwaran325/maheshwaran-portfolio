@@ -51,6 +51,15 @@ const ROUTES = [
     breadcrumb: 'Institutional Finance & Research Platform',
     sources: ['src/pages/CaseStudy.tsx', 'src/data/caseStudyData.ts'],
   },
+  {
+    path: 'work/guide2profit',
+    title: 'Guide2Profit — Startup financial modelling — Case study — Maheshwaran A K',
+    description:
+      'Turning a founder\u2019s spreadsheet financial model into a system: four input modules feeding seven calculation engines, and a Gemini assistant deliberately forbidden from doing the arithmetic.',
+    image: `${SITE}/og.png`,
+    breadcrumb: 'Guide2Profit',
+    sources: ['src/pages/Guide2Profit.tsx', 'src/data/guide2profitData.ts'],
+  },
 ];
 
 /**

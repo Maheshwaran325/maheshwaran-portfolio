@@ -56,7 +56,7 @@ const ROUTES = [
     title: 'Guide2Profit — Startup financial modelling — Post-mortem — Maheshwaran A K',
     description:
       'A financial-modelling SaaS built properly and shelved for the right reason: founders delegate financial modelling rather than doing it themselves. Four input modules, seven calculation engines, and the conversation that ended the project.',
-    image: `${SITE}/og.png`,
+    image: `${SITE}/og-guide2profit.png`,
     breadcrumb: 'Guide2Profit',
     sources: ['src/pages/Guide2Profit.tsx', 'src/data/guide2profitData.ts'],
   },
@@ -65,7 +65,7 @@ const ROUTES = [
     title: 'Land2Build — Generated floor plans — Case study — Maheshwaran A K',
     description:
       'A construction planner that turns a plot and a sentence into a walkable 3D house. The language model parses the brief; a deterministic binary space partition generates the floor plan — which means the layout can be tested, and it is.',
-    image: `${SITE}/og.png`,
+    image: `${SITE}/og-land2build.png`,
     breadcrumb: 'Land2Build',
     sources: ['src/pages/Land2Build.tsx', 'src/data/land2buildData.ts'],
   },
@@ -169,7 +169,10 @@ function withMarkup(html, path) {
 }
 
 for (const route of ROUTES) {
-  const url = `${SITE}/${route.path}`;
+  // Netlify serves a directory index at its trailing-slash URL and 301s the
+  // bare path to it. Publishing the slashed form keeps canonical, sitemap and
+  // internal links pointing at the URL that actually answers 200.
+  const url = route.path ? `${SITE}/${route.path}/` : `${SITE}/`;
   let html = withMarkup(shell, `/${route.path}`);
 
   // The homepage's metadata already lives in the shell; extra routes override.
@@ -247,7 +250,7 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${ROUTES.map(
   (r) => `  <url>
-    <loc>${SITE}/${r.path}</loc>
+    <loc>${SITE}/${r.path}${r.path ? '/' : ''}</loc>
     <lastmod>${lastModified(r.sources)}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>${r.path === '' ? '1.0' : '0.8'}</priority>

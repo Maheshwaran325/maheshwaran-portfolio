@@ -135,7 +135,7 @@ export const PROJECTS: Project[] = [
       'JWT/OAuth authentication with CASL-based permissions for fine-grained, role-specific access.',
     ],
     stack: ['React', 'TypeScript', 'Node.js', 'Express', 'MySQL', 'JWT', 'OAuth', 'CASL'],
-    links: [{ label: 'Read the case study', href: '/work/institutional-platform', primary: true }],
+    links: [{ label: 'Read the case study', href: '/work/institutional-platform/', primary: true }],
   },
   {
     index: '02',
@@ -153,7 +153,7 @@ export const PROJECTS: Project[] = [
     ],
     stack: ['React', 'TypeScript', 'Three.js', 'React Three Fiber', 'Dexie / IndexedDB', 'Leaflet', 'Open-Meteo', 'Vite'],
     links: [
-      { label: 'Read the case study', href: '/work/land2build', primary: true },
+      { label: 'Read the case study', href: '/work/land2build/', primary: true },
       { label: 'Source', href: 'https://github.com/Maheshwaran325/Land2Build' },
     ],
   },
@@ -174,7 +174,7 @@ export const PROJECTS: Project[] = [
     ],
     stack: ['React', 'Node.js', 'Express', 'Supabase', 'PostgreSQL', 'Vercel'],
     links: [
-      { label: 'Read the post-mortem', href: '/work/guide2profit', primary: true },
+      { label: 'Read the post-mortem', href: '/work/guide2profit/', primary: true },
       { label: 'Source', href: 'https://github.com/Maheshwaran325/guidetoprofit' },
     ],
   },

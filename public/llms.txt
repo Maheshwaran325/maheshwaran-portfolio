@@ -1,0 +1,26 @@
+# Maheshwaran A K
+
+> AI-native full-stack engineer in Salem, Tamil Nadu, India. React and
+> TypeScript on the front, FastAPI and Node behind, Postgres and MySQL
+> underneath. Also written as A K Maheshwaran and Maheshwaran K.
+
+Currently at Bipolar Factory, building the product layer around retail-analytics
+AI systems. Previously founded Statix.pro and took its products 0 to 1.
+3+ years shipping production software.
+
+## Pages
+
+- [Portfolio](https://maheshwaran.dev/): Work history, selected projects, stack and contact details.
+- [Institutional Finance & Research Platform](https://maheshwaran.dev/work/institutional-platform): Case study on a multi-tenant ERP running budgeting, expenditure and settlement for a 39-department institution — 330+ active users, ₹43.4 Cr of budget processed, 14+ months in production.
+- [Résumé (PDF)](https://maheshwaran.dev/Maheshwaran-A-K-Resume.pdf): Full work history and education.
+
+## Elsewhere
+
+- [GitHub](https://github.com/Maheshwaran325)
+- [LinkedIn](https://www.linkedin.com/in/maheshwaranak)
+- [X](https://x.com/gingfreecss325)
+
+## Contact
+
+- Email: maheshwaran325@gmail.com
+- Location: Salem, Tamil Nadu, India

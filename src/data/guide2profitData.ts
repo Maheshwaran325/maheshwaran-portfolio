@@ -1,24 +1,27 @@
 /**
- * Case study content for Guide2Profit.
+ * Post-mortem content for Guide2Profit.
  *
- * The concept and the financial model came from a founder; my work was turning
- * that model into a system. Every figure below describes the repository —
- * modules, engines, screens, files — and is checkable against the public
- * source. There are no usage or revenue numbers here because I have none to
- * verify.
+ * My friend's idea and financial model; the two of us built it, me as the
+ * developer. It shipped, found no market, and stopped. Every figure describes
+ * the repository and is checkable against the public source. There are no
+ * usage or revenue numbers because there were none.
+ *
+ * No live link on purpose: the Vercel frontend still serves, but the backend
+ * runs on a Supabase free tier that sleeps after inactivity, so the app does
+ * not work. Linking it as "live" would be false.
  */
 import type { ChapterMeta } from '../components/CaseStudyParts';
 
 export const CASE = {
   title: 'Guide2Profit — Startup Financial Modelling',
-  kicker: 'Case study',
+  kicker: 'Post-mortem',
   summary:
-    'A financial-modelling SaaS that replaces a founder’s spreadsheet. Startup costs, payroll, operations and a funding plan go in; five-year sales forecasts, P&L, break-even, COGS and funding requirements come out — with a Gemini assistant that explains the model but is forbidden from doing the arithmetic.',
+    'A financial-modelling SaaS that replaced a founder’s spreadsheet: costs, payroll and funding plans in; five-year forecasts, P&L, break-even and funding requirements out. We built it properly and it went nowhere — because founders do not want to model their own finances. This is what we built, and the conversation that ended it.',
   meta: [
-    { k: 'Role', v: 'Architect and sole engineer' },
-    { k: 'Origin', v: 'A founder’s concept, built at Statix.pro' },
+    { k: 'Role', v: 'Developer — architecture and build' },
+    { k: 'Origin', v: 'My friend’s idea; the two of us built it' },
     { k: 'Period', v: 'Aug — Sep 2024' },
-    { k: 'Status', v: 'Live, source public' },
+    { k: 'Status', v: 'Shelved — no market fit' },
   ],
   stack: [
     'React',
@@ -31,7 +34,6 @@ export const CASE = {
     'Vercel',
   ],
   repo: 'https://github.com/Maheshwaran325/guidetoprofit',
-  live: 'https://cashcompassclient-git-main-maheshwaran325s-projects.vercel.app/',
 };
 
 export const BUILD = [
@@ -65,6 +67,6 @@ export const CHAPTERS: ChapterMeta[] = [
   { index: '02', label: 'Architecture', title: 'Inputs one side, outputs the other.' },
   { index: '03', label: 'Calculation', title: 'The maths never touches the database.' },
   { index: '04', label: 'The assistant', title: 'An LLM that may not add up.' },
-  { index: '05', label: 'Outcome', title: 'What actually shipped.' },
-  { index: '06', label: 'Retrospective', title: 'What I would change.' },
+  { index: '05', label: 'Why it stopped', title: 'Nobody needed it.' },
+  { index: '06', label: 'Retrospective', title: 'What the failure taught me.' },
 ];

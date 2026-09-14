@@ -12,6 +12,7 @@ AI systems. Previously founded Statix.pro and took its products 0 to 1.
 
 - [Portfolio](https://maheshwaran.dev/): Work history, selected projects, stack and contact details.
 - [Institutional Finance & Research Platform](https://maheshwaran.dev/work/institutional-platform): Case study on a multi-tenant ERP running budgeting, expenditure and settlement for a 39-department institution — 330+ active users, ₹43.4 Cr of budget processed, 14+ months in production.
+- [Guide2Profit — post-mortem](https://maheshwaran.dev/work/guide2profit): Why a well-built financial-modelling SaaS found no market — founders delegate financial modelling rather than doing it themselves. Built with a friend, whose idea it was; shelved in 2024.
 - [Résumé (PDF)](https://maheshwaran.dev/Maheshwaran-A-K-Resume.pdf): Full work history and education.
 
 ## Elsewhere

@@ -140,9 +140,9 @@ export const PROJECTS: Project[] = [
   {
     index: '02',
     title: 'Guide2Profit',
-    period: '2023 — 2024',
-    status: 'Live',
-    statusLive: true,
+    period: '2024',
+    status: 'Shelved',
+    statusLive: false,
     tagline:
       'A financial-modelling SaaS that lets founders forecast five years out — P&L, break-even and funding requirements — without a spreadsheet.',
     highlights: [
@@ -150,11 +150,11 @@ export const PROJECTS: Project[] = [
       'Dynamic dashboards for <strong>5-year forecasts, P&L statements, break-even analysis</strong> and funding estimation.',
       'Built on a clean monolithic architecture with functional programming patterns.',
       'Automated deploys through Vercel + GitHub CI/CD.',
+      'Shelved after validation: founders delegate financial modelling rather than doing it \u2014 the write-up covers why.',
     ],
     stack: ['React', 'Node.js', 'Express', 'Supabase', 'PostgreSQL', 'Vercel'],
     links: [
-      { label: 'Read the case study', href: '/work/guide2profit', primary: true },
-      { label: 'Live app', href: 'https://cashcompassclient-git-main-maheshwaran325s-projects.vercel.app/' },
+      { label: 'Read the post-mortem', href: '/work/guide2profit', primary: true },
       { label: 'Source', href: 'https://github.com/Maheshwaran325/guidetoprofit' },
     ],
   },

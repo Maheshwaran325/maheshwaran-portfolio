@@ -51,7 +51,7 @@ const Portfolio: React.FC = () => (
 const TITLES: Record<string, string> = {
   '/': 'Maheshwaran A K — AI-Native Full-Stack Engineer',
   [CASE_STUDY_PATH]: 'Institutional Finance Platform — Case study — Maheshwaran A K',
-  [GUIDE2PROFIT_PATH]: 'Guide2Profit — Case study — Maheshwaran A K',
+  [GUIDE2PROFIT_PATH]: 'Guide2Profit — Post-mortem — Maheshwaran A K',
 };
 
 export const App: React.FC<{ path?: string }> = ({ path: initial }) => {

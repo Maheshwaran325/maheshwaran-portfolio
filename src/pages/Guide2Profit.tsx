@@ -1,5 +1,4 @@
 import React from 'react';
-import { ArrowUpRight } from 'lucide-react';
 import { BUILD, CASE, CHAPTERS, INPUTS, OUTPUTS } from '../data/guide2profitData';
 import { GithubIcon } from '../components/Icons';
 import {
@@ -49,14 +48,6 @@ export const Guide2Profit: React.FC = () => (
           <div className="hero-actions rise" data-in="true" style={{ marginTop: '2rem' }}>
             <a
               className="btn btn-lg"
-              href={CASE.live}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Live app <ArrowUpRight size={15} />
-            </a>
-            <a
-              className="btn btn-lg"
               href={CASE.repo}
               target="_blank"
               rel="noopener noreferrer"
@@ -75,10 +66,11 @@ export const Guide2Profit: React.FC = () => (
       <Chapter c={CHAPTERS[0]}>
         <div className="prose rise">
           <p>
-            The idea was not mine. A founder I work with had the domain knowledge and a financial
-            model that worked — in a spreadsheet. My job was to turn that model into a system
-            other founders could use without inheriting his formulas, his tab structure or his
-            assumptions about which cell you were allowed to touch.
+            The idea was not mine. A friend of mine had the domain knowledge and a financial
+            model that worked — in a spreadsheet. We built it together: his concept, my code. My
+            job was to turn that model into a system other founders could use without inheriting
+            his formulas, his tab structure or his assumptions about which cell you were allowed
+            to touch.
           </p>
           <p>
             Spreadsheets are excellent at financial modelling and terrible at being software.
@@ -198,23 +190,35 @@ export const Guide2Profit: React.FC = () => (
         </div>
       </Chapter>
 
-      {/* ---------- 05 outcome ---------- */}
+      {/* ---------- 05 why it stopped ---------- */}
       <Chapter c={CHAPTERS[4]}>
         <div className="prose rise">
           <p>
-            What shipped is a working product: 14 screens covering signup, the input forms, each
-            derived statement, a funding advisor and a glossary, on a Supabase-backed Express API
-            with JWT sessions, deployed on Vercel.
+            We demoed it to a founder at Kissflow. His answer took about a minute, and it was
+            right.
           </p>
           <p>
-            I am not going to quote adoption figures for it. It was built over roughly five weeks
-            in late 2024 and I have no usage numbers I can stand behind — and a case study that
-            invents them is worth less than one that admits it.
+            A startup founder does not want to model their own finances. The work is tedious, the
+            stakes are high enough that you want a professional, and the professionals already
+            exist — you hire an auditor or an accountant and hand them the problem. Asking a
+            founder to sit down and enter five years of payroll assumptions is asking them to do
+            a job they were always going to delegate.
           </p>
           <p>
-            What I would point at instead is the shape. The model that used to live in one
-            person&rsquo;s spreadsheet is now eleven modules, seven testable engines and a
-            one-way dependency graph, and the source is public if you want to check that claim.
+            We had built for a user who does not exist: someone financially literate enough to
+            fill the inputs in correctly, but not yet organised enough to have hired the person
+            who normally does. That gap is much thinner than it looks from inside the build.
+          </p>
+          <p>
+            So we stopped. The product works — 14 screens, eleven modules, a Supabase-backed API
+            — and none of that was the problem. It solved a headache founders resolve by paying
+            someone else to have it.
+          </p>
+          <p>
+            There is no live link on this page for the same reason there is no traffic. The
+            Vercel frontend still serves, but the backend sits on a Supabase free tier that
+            sleeps after inactivity, and it has been inactive for a long time. Calling it
+            &ldquo;live&rdquo; would be a nicer sentence and a false one.
           </p>
         </div>
       </Chapter>
@@ -222,6 +226,12 @@ export const Guide2Profit: React.FC = () => (
       {/* ---------- 06 retrospective ---------- */}
       <Chapter c={CHAPTERS[5]}>
         <div className="prose rise">
+          <p>
+            <strong>I would have had that conversation in week one.</strong> The objection that
+            ended the project cost one demo and could have been sought out before a line was
+            written. We spent five weeks building an answer and no time at all checking whether
+            anyone had the question. That is the whole lesson, and it is not a technical one.
+          </p>
           <p>
             <strong>I would write the engines in TypeScript.</strong> The calculation files are
             the one place in the codebase where a wrong type is genuinely expensive, and they are
@@ -248,11 +258,11 @@ export const Guide2Profit: React.FC = () => (
       </Chapter>
 
       <CaseStudyCta
-        title="Want to look closer?"
-        note="The source is public, so the architecture in this write-up is checkable. Happy to walk through the calculation engines or the input-output split in conversation."
+        title="Happy to talk about the ones that did not work."
+        note="The source is public, so everything above is checkable. I think a project that failed for a clear reason is worth more in conversation than one that quietly succeeded."
       />
 
-      <CaseStudyFooter note="Concept by a founder I work with" />
+      <CaseStudyFooter note="Built with a friend, whose idea it was" />
     </main>
   </>
 );

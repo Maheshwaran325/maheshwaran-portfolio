@@ -53,9 +53,9 @@ const ROUTES = [
   },
   {
     path: 'work/guide2profit',
-    title: 'Guide2Profit — Startup financial modelling — Case study — Maheshwaran A K',
+    title: 'Guide2Profit — Startup financial modelling — Post-mortem — Maheshwaran A K',
     description:
-      'Turning a founder\u2019s spreadsheet financial model into a system: four input modules feeding seven calculation engines, and a Gemini assistant deliberately forbidden from doing the arithmetic.',
+      'A financial-modelling SaaS built properly and shelved for the right reason: founders delegate financial modelling rather than doing it themselves. Four input modules, seven calculation engines, and the conversation that ended the project.',
     image: `${SITE}/og.png`,
     breadcrumb: 'Guide2Profit',
     sources: ['src/pages/Guide2Profit.tsx', 'src/data/guide2profitData.ts'],

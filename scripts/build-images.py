@@ -60,7 +60,10 @@ OUTLINE = 0.0024
 OUTLINE_OPACITY = 0.5
 OUTLINE_COLOUR = (255, 255, 255)
 
-WEBP = dict(quality=85, alpha_quality=100, method=6)
+# q80 rather than the usual 85: at the sizes these actually render — 186px on a
+# phone, ~330px on a desktop — the two are indistinguishable on flat artwork,
+# and 80 is about 8% smaller.
+WEBP = dict(quality=80, alpha_quality=100, method=6)
 
 
 def cut_background(img):
@@ -240,10 +243,19 @@ source = sys.argv[1] if len(sys.argv) > 1 else MASTER
 src = Image.open(source)
 print(f"source {source} ({src.width}x{src.height}, {src.mode})")
 
-cut = cut_background(src)
-_, top, _, bottom = content_box(cut)
-figure = square_figure(outline(cut, round(OUTLINE * (bottom - top))))
-print(f"figure cut, outlined and squared to {figure.width}x{figure.height}")
+# The master has already been cut and outlined, so a no-argument run must not
+# do it twice — cutting a transparent image finds no white to flood from and
+# would flatten the alpha, and outlining again would double the hairline.
+corrected = src.mode in ("RGBA", "LA") and np.array(src.convert("RGBA"))[..., 3].min() < 8
+
+if corrected:
+    figure = square_figure(src.convert("RGBA"))
+    print(f"source already corrected; squared to {figure.width}x{figure.height}")
+else:
+    cut = cut_background(src)
+    _, top, _, bottom = content_box(cut)
+    figure = square_figure(outline(cut, round(OUTLINE * (bottom - top))))
+    print(f"figure cut, outlined and squared to {figure.width}x{figure.height}")
 
 written = []
 

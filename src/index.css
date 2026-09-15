@@ -15,11 +15,22 @@
    which used to drag in a 90 KB `latin-ext` file for one glyph.
    Regenerate with scripts/build-fonts.sh after changing weights.
    ------------------------------------------------------------ */
+/* ------------------------------------------------------------
+   `optional`, not `swap`. Both are preloaded, so a warm cache or
+   a quick connection paints in them straight away; what optional
+   removes is the other branch, where the font arrives after the
+   first paint and the page is laid out a second time. That relayout
+   was the whole of the site's CLS — one paragraph, .hero-lede,
+   re-wrapping and pushing the section below it down. With optional
+   the browser commits to whatever it painted first, so a slow font
+   costs typography for that one pageview instead of a layout shift,
+   and it is in cache for every visit after.
+   ------------------------------------------------------------ */
 @font-face {
   font-family: 'Inter Tight';
   font-style: normal;
   font-weight: 400 600;
-  font-display: swap;
+  font-display: optional;
   src: url('./assets/fonts/inter-tight-var.woff2') format('woff2');
 }
 
@@ -27,23 +38,29 @@
   font-family: 'JetBrains Mono';
   font-style: normal;
   font-weight: 400 500;
-  font-display: swap;
+  font-display: optional;
   src: url('./assets/fonts/jetbrains-mono-var.woff2') format('woff2');
 }
 
 /* ------------------------------------------------------------
-   Nothing in the head blocks the first paint any more, which
-   means the page is laid out in a fallback and laid out again
-   when the webfont lands — a reflow measured at 0.17 CLS on the
-   hero copy. These make the fallback occupy exactly the space
-   the webfont will: size-adjust matches its average advance
-   width, and the overrides restate the webfont's own vertical
-   metrics in that scaled em, so line boxes match as well.
+   The face a slow first paint gets, sized to stand in for the
+   webfont: size-adjust matches its average advance width, and the
+   overrides restate the webfont's own vertical metrics in that
+   scaled em, so line boxes match too.
+
+   A face is only usable if one of its src entries resolves, and a
+   bare local('Arial') resolves on macOS and Windows and nowhere
+   else reliably — on the Linux Chrome that PageSpeed runs on it
+   found nothing, the whole face was dropped, and the stack fell
+   through to a bare sans-serif with none of these numbers applied.
+   The extra names are the Arial and Courier metric clones that ship
+   with Linux distributions, so the overrides land there as well.
    Recompute with scripts/font-metrics.py if a font changes.
    ------------------------------------------------------------ */
 @font-face {
   font-family: 'Inter Tight Fallback';
-  src: local('Arial');
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans'), local('Arimo'),
+    local('Nimbus Sans'), local('DejaVu Sans');
   size-adjust: 96.26%;
   ascent-override: 100.64%;
   descent-override: 25.06%;
@@ -52,7 +69,8 @@
 
 @font-face {
   font-family: 'JetBrains Mono Fallback';
-  src: local('Courier New');
+  src: local('Courier New'), local('Liberation Mono'), local('Cousine'),
+    local('Nimbus Mono PS'), local('DejaVu Sans Mono');
   size-adjust: 99.98%;
   ascent-override: 102.02%;
   descent-override: 30.00%;

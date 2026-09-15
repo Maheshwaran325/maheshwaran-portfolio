@@ -15,18 +15,30 @@ webfont's; the ascent/descent/line-gap overrides then restate the webfont's own
 vertical metrics in the scaled em, so line boxes match too. Paste the output
 into src/index.css and put the fallback family directly after the webfont in
 the stack.
+
+The webfonts themselves are `font-display: optional`, so a fallback that gets
+painted is the one that stays for that pageview — these numbers decide how
+close it looks, not whether the page moves.
 """
 
 from fontTools.ttLib import TTFont
 
-# The local faces the fallbacks resolve to. Chrome aliases both names on
-# platforms that lack them — Arial to Roboto on Android and Liberation Sans on
-# Linux, Courier New to the platform monospace — and the aliases are metrically
-# close, so one set of numbers covers what matters.
+# The local faces the fallbacks resolve to, measured from the first name and
+# listed in the src in this order. Chrome does not alias a missing family for
+# you: on the Linux it runs under on PageSpeed, local("Arial") alone matched
+# nothing and the face was dropped along with every override below. The rest
+# are the metric clones of Arial and Courier that Linux distributions ship, so
+# one set of numbers stays right wherever the match lands.
 SUPPLEMENTAL = "/System/Library/Fonts/Supplemental"
 REFERENCES = {
-    "Arial": f"{SUPPLEMENTAL}/Arial.ttf",
-    "Courier New": f"{SUPPLEMENTAL}/Courier New.ttf",
+    "Arial": (
+        f"{SUPPLEMENTAL}/Arial.ttf",
+        ["Arial", "Helvetica", "Liberation Sans", "Arimo", "Nimbus Sans", "DejaVu Sans"],
+    ),
+    "Courier New": (
+        f"{SUPPLEMENTAL}/Courier New.ttf",
+        ["Courier New", "Liberation Mono", "Cousine", "Nimbus Mono PS", "DejaVu Sans Mono"],
+    ),
 }
 
 # Weighted toward what the page actually sets: prose, not a specimen.
@@ -62,12 +74,14 @@ def metrics(path):
 
 
 for path, fallback, local in FONTS:
-    reference = metrics(REFERENCES[local])
+    reference_path, names = REFERENCES[local]
+    reference = metrics(reference_path)
     m = metrics(path)
     adjust = m["avg_width"] / reference["avg_width"]
+    src = ", ".join(f"local('{name}')" for name in names)
     print(f"""@font-face {{
   font-family: '{fallback}';
-  src: local('{local}');
+  src: {src};
   size-adjust: {adjust * 100:.2f}%;
   ascent-override: {m['ascent'] / adjust * 100:.2f}%;
   descent-override: {m['descent'] / adjust * 100:.2f}%;

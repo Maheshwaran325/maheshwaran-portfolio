@@ -55,13 +55,20 @@ jobs:
       - name: Lighthouse — desktop
         run: npx lhci autorun --collect.settings.preset=desktop
 
+      # Only when something went wrong: a green run has already said everything
+      # it has to say, and 36 Lighthouse reports an hour would eat the account's
+      # artifact storage for no reason.
       - name: Keep the reports
-        if: ${{ !cancelled() }}
+        if: failure()
         uses: actions/upload-artifact@v7
         with:
           name: reports
           path: |
             playwright-report/
             .lighthouseci/
+          # .lighthouseci is a dotfile, and this action drops hidden paths
+          # unless told otherwise — without this the Lighthouse reports are
+          # silently left out of the artifact, which is the half you need.
+          include-hidden-files: true
           retention-days: 14
           if-no-files-found: ignore

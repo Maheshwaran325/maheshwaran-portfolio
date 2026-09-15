@@ -12,14 +12,25 @@
  * attention, not the work, and next to "₹43.4 Cr processed" they read as a
  * downgrade. Language mix and activity corroborate the stack claims instead.
  */
-import { writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 
 const USER = 'Maheshwaran325';
 const OUT = 'src/data/githubStats.json';
 
+// Unauthenticated calls are rate-limited per IP, and a GitHub Actions runner
+// shares its IP with everyone else on that host — so the weekly job supplies
+// the workflow's own token. Running it by hand needs no token.
+const token = process.env.GITHUB_TOKEN;
+
 const response = await fetch(
   `https://api.github.com/users/${USER}/repos?per_page=100&sort=updated`,
-  { headers: { Accept: 'application/vnd.github+json', 'User-Agent': `${USER}-portfolio` } },
+  {
+    headers: {
+      Accept: 'application/vnd.github+json',
+      'User-Agent': `${USER}-portfolio`,
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  },
 );
 
 if (!response.ok) {
@@ -45,15 +56,32 @@ const latestPush = repos
   .sort()
   .at(-1);
 
-const stats = {
+const figures = {
   user: USER,
   url: `https://github.com/${USER}`,
   publicRepos: repos.length,
   languages,
   lastPush: latestPush?.slice(0, 10) ?? null,
-  syncedAt: new Date().toISOString().slice(0, 10),
 };
 
+/**
+ * Nothing is written unless a figure actually moved.
+ *
+ * syncedAt is the date of the last *check*, and it is not rendered anywhere.
+ * Stamping it on every run would make the weekly job commit a one-line diff
+ * every week whether or not GitHub had anything new to say — and since
+ * /changelog is generated from the commit log, that noise would be published.
+ */
+const previous = await readFile(OUT, 'utf8').then(JSON.parse, () => null);
+const unchanged =
+  previous && JSON.stringify({ ...previous, syncedAt: undefined }) === JSON.stringify({ ...figures, syncedAt: undefined });
+
+if (unchanged) {
+  console.log(`${OUT}: unchanged (${figures.publicRepos} repos, last push ${figures.lastPush}).`);
+  process.exit(0);
+}
+
+const stats = { ...figures, syncedAt: new Date().toISOString().slice(0, 10) };
 await writeFile(OUT, `${JSON.stringify(stats, null, 2)}\n`, 'utf8');
 console.log(
   `${OUT}: ${stats.publicRepos} repos, ${languages.length} languages, last push ${stats.lastPush}`,

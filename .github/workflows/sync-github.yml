@@ -1,0 +1,57 @@
+name: Sync GitHub figures
+
+# The public-GitHub panel on the homepage renders from a committed JSON file,
+# refreshed by hand with `npm run sync:github` — which means it was only ever
+# as current as the last time anyone remembered. This remembers weekly.
+#
+# The commit lands on main and Netlify rebuilds from it, so the figures reach
+# the site the same way every other change does.
+
+on:
+  schedule:
+    # Mondays, 06:17 UTC. Off the hour, because everyone's cron is on the hour
+    # and GitHub delays the queue accordingly.
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-github
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # No install step: the script is plain Node with no dependencies.
+      - name: Fetch the figures
+        run: npm run sync:github
+        env:
+          # Lifts the per-IP rate limit, which a shared runner can otherwise
+          # walk into. The script exits non-zero if GitHub refuses, so a
+          # throttled run fails loudly rather than publishing stale numbers.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit, but only if a figure moved
+        run: |
+          if git diff --quiet -- src/data/githubStats.json; then
+            echo "Figures unchanged — nothing to commit."
+            exit 0
+          fi
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/data/githubStats.json
+          git commit -m 'Refresh the public GitHub figures' \
+                     -m 'Weekly sync; the panel renders from the committed JSON.'
+          git push

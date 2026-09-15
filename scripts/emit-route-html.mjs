@@ -16,24 +16,28 @@ import { dirname, join } from 'node:path';
 
 const DIST = 'dist';
 const SITE = 'https://maheshwaran.dev';
-const TODAY = new Date().toISOString().slice(0, 10);
+const NOW = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
 
 const { render, PERSONAL, EXPERIENCE, PROJECTS } = await import('../dist-ssr/entry-server.js');
 
 /**
- * Date the route's content last changed, so sitemap lastmod describes the
- * content rather than the deploy. Falls back to today when git is unavailable
- * or the file's history sits outside a shallow clone.
+ * When the route's content last changed, so sitemap lastmod describes the
+ * content rather than the deploy. Falls back to now when git is unavailable or
+ * the file's history sits outside a shallow clone.
+ *
+ * A full ISO 8601 timestamp rather than a bare date: schema.org accepts either,
+ * but Google's ProfilePage parser rejects a date-only dateModified as an
+ * invalid datetime, and sitemap lastmod takes the same W3C format.
  */
 function lastModified(sources) {
   try {
-    const out = execFileSync('git', ['log', '-1', '--format=%cs', '--', ...sources], {
+    const out = execFileSync('git', ['log', '-1', '--format=%cI', '--', ...sources], {
       encoding: 'utf8',
       stdio: ['ignore', 'pipe', 'ignore'],
     }).trim();
-    return /^\d{4}-\d{2}-\d{2}$/.test(out) ? out : TODAY;
+    return /^\d{4}-\d{2}-\d{2}T[\d:]{8}([+-]\d{2}:\d{2}|Z)$/.test(out) ? out : NOW;
   } catch {
-    return TODAY;
+    return NOW;
   }
 }
 

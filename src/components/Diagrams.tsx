@@ -3,12 +3,18 @@ import React from 'react';
 /**
  * Inline SVGs so the diagrams inherit the design tokens and stay crisp.
  * Both scale with their container and stay legible down to phone width.
+ *
+ * Below 720px they are wider than the viewport and scroll horizontally rather
+ * than shrink to illegibility (see .figure in index.css). A region that
+ * scrolls has to be reachable by keyboard, or a keyboard user cannot see its
+ * right-hand half at all — hence tabIndex on the figure. The figcaption names
+ * it, so the tab stop announces itself.
  */
 
 const MONO = "'JetBrains Mono', ui-monospace, monospace";
 
 export const ApprovalDiagram: React.FC = () => (
-  <figure className="figure">
+  <figure className="figure" tabIndex={0}>
     <svg viewBox="0 0 860 250" role="img" aria-labelledby="approval-title" className="diagram">
       <title id="approval-title">
         A document moves through four ordered stages. Any stage can return it to the originator,
@@ -77,7 +83,7 @@ export const LayerDiagram: React.FC = () => {
     { k: 'DISBURSEMENT', v: 'what actually left the account', w: 41 },
   ];
   return (
-    <figure className="figure">
+    <figure className="figure" tabIndex={0}>
       <svg viewBox="0 0 860 250" role="img" aria-labelledby="layer-title" className="diagram">
         <title id="layer-title">
           Allocation, commitment and disbursement are modelled separately, so available balance is

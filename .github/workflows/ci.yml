@@ -1,0 +1,67 @@
+name: CI
+
+# Netlify deploys whatever lands on main. This runs first, so "it built" is not
+# the only thing standing between a commit and the live site.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The full history, for two reasons: /changelog is generated from
+          # `git log`, and the sitemap's lastmod for each route comes from the
+          # last commit that touched its sources. A shallow clone silently
+          # turns both into "today".
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck and build
+        run: npm run build
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      # The suite rebuilds and serves dist/ itself — see playwright.config.ts.
+      - name: Test
+        run: npm test
+
+      - name: Lighthouse — mobile
+        run: npx lhci autorun
+
+      - name: Lighthouse — desktop
+        run: npx lhci autorun --collect.settings.preset=desktop
+
+      - name: Keep the reports
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: |
+            playwright-report/
+            .lighthouseci/
+          retention-days: 14
+          if-no-files-found: ignore

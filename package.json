@@ -7,6 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/emit-route-html.mjs",
     "lint": "oxlint",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "lighthouse": "lhci autorun",
     "preview": "vite preview",
     "sync:github": "node scripts/sync-github.mjs"
   },
@@ -16,6 +19,9 @@
     "react-dom": "^19.2.8"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@lhci/cli": "^0.15.1",
+    "@playwright/test": "^1.63.0",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",

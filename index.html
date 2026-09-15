@@ -14,7 +14,14 @@
     <meta name="author" content="Maheshwaran A K" />
     <link rel="canonical" href="https://maheshwaran.dev/" />
 
-    <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png" />
+    <!--
+      Google's favicon crawler asks for /favicon.ico by path, whether or not a
+      page declares an icon, and it wants a square whose side is a multiple of
+      48px. A lone 64x64 PNG met neither condition. Regenerate with
+      scripts/build-icons.py.
+    -->
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <meta property="og:type" content="website" />
@@ -40,12 +47,12 @@
     />
     <meta name="twitter:image" content="https://maheshwaran.dev/og.png" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
+    <!--
+      Fonts are self-hosted (see src/index.css) and the stylesheet is inlined,
+      so nothing in this head blocks the first paint. The preload links and
+      the inline <style> are both injected by scripts/emit-route-html.mjs,
+      which is the only place that knows the fingerprinted filenames.
+    -->
 
     <!-- Structured data is generated in scripts/emit-route-html.mjs -->
   </head>

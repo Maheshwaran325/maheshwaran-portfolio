@@ -21,10 +21,13 @@ src/
     useReveal.ts         scroll-in reveal for .rise elements
     useActiveSection.ts  nav highlighting
   components/            Nav, Hero, Metrics, Work, Projects, Stack, Credentials, Contact
+  assets/fonts/          self-hosted subsets, built by scripts/build-fonts.sh
+  assets/avatar*.webp    hero portrait srcset, built by scripts/build-images.py
 public/
   Maheshwaran-A-K-Resume.pdf
-  og.png                 1200x630 social card
-  favicon-64.png, apple-touch-icon.png
+  og.png                 1200x630 social card; its figure is restamped by build-images.py
+  portrait.webp          referenced by the Person JSON-LD
+  favicon.ico, favicon-96.png, apple-touch-icon.png
 ```
 
 **To change content, edit `src/data/portfolioData.ts` only.** Components read from it.
@@ -38,4 +41,12 @@ npm run dev       # vite dev server
 npm run build     # tsc -b && vite build
 npm run preview   # serve the production build
 npm run lint      # oxlint
+
+# Both write committed files, so they only run when the inputs change:
+./scripts/build-fonts.sh   # webfont subsets (needs uv)
+
+# Everything derived from the illustration: the avatar srcset, the nav mark,
+# portrait.webp, the favicons, and the figure standing in og.png. Pass new
+# artwork to replace it; with no argument it rebuilds from the master.
+uv run --with pillow --with numpy --with scipy python scripts/build-images.py [source.png]
 ```

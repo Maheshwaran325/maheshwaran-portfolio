@@ -1,7 +1,17 @@
 import React from 'react';
 import { ArrowUpRight, Download, Mail } from 'lucide-react';
 import { PERSONAL } from '../data/portfolioData';
-import avatar from '../assets/avatar.webp';
+import avatar384 from '../assets/avatar-384.webp';
+import avatar512 from '../assets/avatar-512.webp';
+import avatar640 from '../assets/avatar-640.webp';
+
+/**
+ * The plate is capped at 240px below 560px and 300px below 940px, and the
+ * portrait fills 78% of it — so a phone was downloading a 640px image for a
+ * ~190px slot. These track the `.plate` rules in index.css.
+ */
+const AVATAR_SIZES = '(max-width: 560px) 190px, (max-width: 940px) 235px, 25vw';
+const AVATAR_SRCSET = `${avatar384} 384w, ${avatar512} 512w, ${avatar640} 640w`;
 
 export const Hero: React.FC = () => (
   <section id="top" className="section hero">
@@ -49,11 +59,18 @@ export const Hero: React.FC = () => (
 
       <figure className="plate rise" data-in="true">
         <div className="plate-inner">
-          <img src={avatar} alt="Illustrated portrait of Maheshwaran A K" width={640} height={640} />
+          <img
+            src={avatar640}
+            srcSet={AVATAR_SRCSET}
+            sizes={AVATAR_SIZES}
+            alt="Illustrated portrait of Maheshwaran A K"
+            width={640}
+            height={640}
+          />
         </div>
         <figcaption className="plate-cap">
           <span>~/mahesh.png</span>
-          <span>vibe coder</span>
+          <span>human in the loop</span>
         </figcaption>
       </figure>
     </div>

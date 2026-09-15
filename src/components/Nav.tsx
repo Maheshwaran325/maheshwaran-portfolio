@@ -32,7 +32,7 @@ export const Nav: React.FC = () => {
       <div className="shell nav-in">
         <a className="brand" href="#top">
           <span className="brand-mark">
-            <img src={mark} alt="" width={30} height={30} />
+            <img src={mark} alt="" width={96} height={96} />
           </span>
           <span className="brand-name">
             maheshwaran<span>.ak</span>

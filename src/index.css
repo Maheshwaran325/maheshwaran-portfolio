@@ -5,6 +5,32 @@
 
 @layer reset, base, components, utils;
 
+/* ------------------------------------------------------------
+   Fonts are self-hosted rather than pulled from Google, which
+   cost a render-blocking stylesheet on a third-party origin
+   before a single glyph was even requested. These are the
+   upstream variable fonts cut down to the weight range the page
+   uses and to the Latin range plus ₹ and → — the two characters
+   the copy needs that Google's `latin` subset leaves out, and
+   which used to drag in a 90 KB `latin-ext` file for one glyph.
+   Regenerate with scripts/build-fonts.sh after changing weights.
+   ------------------------------------------------------------ */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('./assets/fonts/inter-tight-var.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('./assets/fonts/jetbrains-mono-var.woff2') format('woff2');
+}
+
 @layer reset {
   *, *::before, *::after { box-sizing: border-box; }
   * { margin: 0; padding: 0; }

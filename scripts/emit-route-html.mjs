@@ -10,7 +10,7 @@
  * Netlify matches static files before redirect rules, so these are served
  * directly and the catch-all only ever sees genuinely unknown URLs.
  */
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, rm } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 
@@ -143,7 +143,44 @@ function personGraph() {
   };
 }
 
-const shell = await readFile(join(DIST, 'index.html'), 'utf8');
+/**
+ * Folds the stylesheet into the document and preloads the fonts it names.
+ *
+ * An external stylesheet blocks the first paint for a whole round trip, which
+ * on a mobile connection was most of a second for 4 KB of compressed CSS —
+ * more than the bytes are worth. Inlining it means the first response carries
+ * everything needed to paint.
+ *
+ * That leaves the fonts as the only thing on the critical path, and they are
+ * discovered late, after the parser reaches the inlined @font-face rules. The
+ * preload links go in ahead of them. Both the stylesheet and the fonts are
+ * fingerprinted by Vite, so this is the only place that can name them.
+ */
+async function inlineStyles(html) {
+  const linkRe = /\s*<link rel="stylesheet"[^>]*href="\/(assets\/[^"]+\.css)"[^>]*>/;
+  const link = linkRe.exec(html);
+  if (!link) throw new Error('no stylesheet link in shell — did the build change?');
+
+  const href = link[1];
+  const css = await readFile(join(DIST, href), 'utf8');
+
+  const fonts = [...css.matchAll(/url\(\s*"?\/(assets\/[^"')]+\.woff2)"?\s*\)/g)].map(
+    ([, font]) => `<link rel="preload" href="/${font}" as="font" type="font/woff2" crossorigin />\n    `,
+  );
+  if (!fonts.length) throw new Error('no woff2 in stylesheet — are the fonts still self-hosted?');
+
+  // Nothing references the file once it is inlined, so don't ship it.
+  await rm(join(DIST, href));
+
+  const scriptRe = /<script type="module"/;
+  if (!scriptRe.test(html)) throw new Error('no module script in shell — did the build change?');
+
+  return html
+    .replace(linkRe, `\n    <style>${css}</style>`)
+    .replace(scriptRe, `${fonts.join('')}<script type="module"`);
+}
+
+const shell = await inlineStyles(await readFile(join(DIST, 'index.html'), 'utf8'));
 
 const ROOT = '<div id="root"></div>';
 if (!shell.includes(ROOT)) throw new Error('no empty #root in shell — did the build change?');

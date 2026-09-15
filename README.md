@@ -45,6 +45,9 @@ npm run lint      # oxlint
 # Both write committed files, so they only run when the inputs change:
 ./scripts/build-fonts.sh   # webfont subsets (needs uv)
 
+# Fallback metrics, so the webfont swap does not move the page. Paste into index.css.
+uv run --with fonttools python scripts/font-metrics.py
+
 # Everything derived from the illustration: the avatar srcset, the nav mark,
 # portrait.webp, the favicons, and the figure standing in og.png. Pass new
 # artwork to replace it; with no argument it rebuilds from the master.

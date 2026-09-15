@@ -31,6 +31,34 @@
   src: url('./assets/fonts/jetbrains-mono-var.woff2') format('woff2');
 }
 
+/* ------------------------------------------------------------
+   Nothing in the head blocks the first paint any more, which
+   means the page is laid out in a fallback and laid out again
+   when the webfont lands — a reflow measured at 0.17 CLS on the
+   hero copy. These make the fallback occupy exactly the space
+   the webfont will: size-adjust matches its average advance
+   width, and the overrides restate the webfont's own vertical
+   metrics in that scaled em, so line boxes match as well.
+   Recompute with scripts/font-metrics.py if a font changes.
+   ------------------------------------------------------------ */
+@font-face {
+  font-family: 'Inter Tight Fallback';
+  src: local('Arial');
+  size-adjust: 96.26%;
+  ascent-override: 100.64%;
+  descent-override: 25.06%;
+  line-gap-override: 0.00%;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono Fallback';
+  src: local('Courier New');
+  size-adjust: 99.98%;
+  ascent-override: 102.02%;
+  descent-override: 30.00%;
+  line-gap-override: 0.00%;
+}
+
 @layer reset {
   *, *::before, *::after { box-sizing: border-box; }
   * { margin: 0; padding: 0; }
@@ -58,8 +86,10 @@
   --signal-ink:  #0a0a0b;
   --signal-wash: rgba(204, 255, 61, 0.10);
 
-  --font-sans: 'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* The *-Fallback families sit first so the pre-swap layout matches the
+     post-swap one; the plain stacks behind them cover a blocked webfont. */
+  --font-sans: 'Inter Tight', 'Inter Tight Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'JetBrains Mono Fallback', ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --shell: 1120px;
   --gutter: clamp(1.25rem, 4vw, 2.5rem);
@@ -205,15 +235,25 @@
   .btn-lg { padding: 0.8rem 1.25rem; font-size: 0.82rem; }
 
   /* ---------- live dot ---------- */
+  /* The ring is a scaled pseudo-element rather than an animated box-shadow
+     spread: box-shadow cannot be composited, so five of these on a page put
+     every frame of an infinite animation on the main thread. transform and
+     opacity run on the compositor instead. The scale is 20/6 — a 6px dot
+     under the old 7px spread reached 20px across. */
   .dot {
+    position: relative;
     width: 6px; height: 6px; border-radius: 50%; background: var(--signal); flex: none;
-    box-shadow: 0 0 0 0 var(--signal-wash);
+  }
+  .dot::after {
+    content: '';
+    position: absolute; inset: 0; border-radius: 50%;
+    background: var(--signal);
     animation: ping 2.4s var(--ease) infinite;
   }
   @keyframes ping {
-    0%   { box-shadow: 0 0 0 0 rgba(204,255,61,0.45); }
-    70%  { box-shadow: 0 0 0 7px rgba(204,255,61,0); }
-    100% { box-shadow: 0 0 0 0 rgba(204,255,61,0); }
+    0%   { transform: scale(1); opacity: 0.45; }
+    70%  { transform: scale(3.33); opacity: 0; }
+    100% { transform: scale(3.33); opacity: 0; }
   }
 
   /* ---------- hero ---------- */

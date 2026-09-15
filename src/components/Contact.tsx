@@ -100,6 +100,17 @@ export const Contact: React.FC = () => {
       <div className="shell">
         <footer className="footer">
           <span>© {new Date().getFullYear()} Maheshwaran A K</span>
+          <nav className="foot-links" aria-label="Site">
+            <a href="/resume/">Résumé</a>
+            <a href="/changelog/">Changelog</a>
+            <a
+              href="https://github.com/Maheshwaran325/maheshwaran-portfolio"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Source
+            </a>
+          </nav>
           <span>Built with React, TypeScript & Vite</span>
         </footer>
       </div>

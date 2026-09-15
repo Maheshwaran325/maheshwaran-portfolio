@@ -73,6 +73,29 @@ const ROUTES = [
     breadcrumb: 'Land2Build',
     sources: ['src/pages/Land2Build.tsx', 'src/data/land2buildData.ts'],
   },
+  {
+    path: 'resume',
+    title: 'Résumé — Maheshwaran A K — AI-Native Full-Stack Engineer',
+    description:
+      'Full work history, selected projects, stack and credentials for Maheshwaran A K — AI-native full-stack engineer in Salem, India. React and TypeScript, FastAPI and Node, Postgres and MySQL. Also available as a PDF.',
+    image: `${SITE}/og.png`,
+    breadcrumb: 'Résumé',
+    // A CV is not an article; it is a page about a person.
+    schemaType: 'WebPage',
+    sources: ['src/pages/Resume.tsx', 'src/data/portfolioData.ts'],
+  },
+  {
+    path: 'changelog',
+    title: 'Changelog — Maheshwaran A K',
+    description:
+      'Every change to maheshwaran.dev, read from the repository at build time: what shipped, when, and the commit behind it.',
+    image: `${SITE}/og.png`,
+    breadcrumb: 'Changelog',
+    schemaType: 'WebPage',
+    // Its content *is* the history, so the newest commit anywhere in the repo
+    // is when this page last changed.
+    sources: ['.'],
+  },
 ];
 
 /**
@@ -236,15 +259,22 @@ for (const route of ROUTES) {
     html = html.replace(canonicalRe, `$1${url}$2`);
 
     // The shell's Person block describes the author; add what this page is.
+    // Case studies are Articles; the résumé and the changelog are pages about
+    // the person rather than pieces of writing, and Article's required
+    // `headline` is `name` on every other type.
+    const type = route.schemaType ?? 'Article';
     const jsonLd = {
       '@context': 'https://schema.org',
       '@graph': [
         {
-          '@type': 'Article',
-          headline: route.title,
+          '@type': type,
+          ...(type === 'Article'
+            ? { headline: route.title }
+            : { name: route.title, about: { '@id': `${SITE}/#person` } }),
           description: route.description,
           image: route.image,
           url,
+          dateModified: lastModified(route.sources),
           author: { '@type': 'Person', '@id': `${SITE}/#person`, name: PERSONAL.name },
           publisher: { '@id': `${SITE}/#person` },
           inLanguage: 'en',

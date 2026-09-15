@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Download, Menu, X } from 'lucide-react';
-import { NAV, PERSONAL } from '../data/portfolioData';
+import { FileText, Menu, X } from 'lucide-react';
+import { NAV } from '../data/portfolioData';
 import { useActiveSection } from '../hooks/useActiveSection';
 import mark from '../assets/mark.webp';
 
@@ -53,8 +53,11 @@ export const Nav: React.FC = () => {
         </nav>
 
         <div className="nav-cta">
-          <a className="btn btn-signal" href={PERSONAL.resume} download>
-            <Download size={14} />
+          {/* The page, not the PDF. A file download is a dead end — nothing to
+              link to, nothing to index, and a pinch-to-zoom document on a
+              phone. /resume offers the PDF to anyone who wants the file. */}
+          <a className="btn btn-signal" href="/resume/">
+            <FileText size={14} />
             <span>Résumé</span>
           </a>
           <button

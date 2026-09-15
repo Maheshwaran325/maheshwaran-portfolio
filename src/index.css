@@ -622,3 +622,108 @@
   .figure { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .diagram { min-width: 620px; padding: 1rem; }
 }
+
+/* ======================= résumé + changelog ======================= */
+
+@layer components {
+  /* The résumé is a denser read than the homepage: less air between sections,
+     since the point is to be scanned rather than scrolled through. */
+  .resume .section { padding-block: clamp(2.5rem, 4.5vw, 4rem); }
+  .resume .sec-head { margin-bottom: clamp(1.25rem, 2vw, 1.75rem); }
+
+  .rs-contact {
+    display: flex; flex-wrap: wrap; gap: 0.6rem 1.75rem;
+    padding-top: 1.5rem; border-top: 1px solid var(--line);
+    font-family: var(--font-mono); font-size: 0.76rem; letter-spacing: 0.03em;
+  }
+  .rs-contact a, .rs-place {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    color: var(--fg-mute); transition: color 0.18s var(--ease);
+  }
+  .rs-contact a:hover { color: var(--signal); }
+
+  /* ---------- changelog ---------- */
+  .cl-list { display: flex; flex-direction: column; }
+
+  .cl-entry {
+    display: grid; grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+    gap: 0.5rem 1rem; align-items: baseline;
+    padding-block: 0.7rem; border-bottom: 1px solid var(--line);
+    transition: background 0.18s var(--ease);
+  }
+  .cl-list li:last-child .cl-entry { border-bottom: 0; }
+  .cl-entry:hover { background: var(--bg-raised); }
+
+  .cl-day {
+    font-family: var(--font-mono); font-size: 0.74rem;
+    color: var(--fg-mute); font-variant-numeric: tabular-nums;
+  }
+  .cl-subject { color: var(--fg-dim); font-size: 0.96rem; line-height: 1.5; }
+  .cl-entry:hover .cl-subject { color: var(--fg); }
+  .cl-sha {
+    font-family: var(--font-mono); font-size: 0.7rem;
+    /* --line-strong is a border colour; as text it comes out at 1.3:1. */
+    color: var(--fg-mute); letter-spacing: 0.04em;
+  }
+  .cl-entry:hover .cl-sha { color: var(--signal); }
+
+  /* ---------- footer links ---------- */
+  .foot-links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; }
+  .foot-links a { color: var(--fg-mute); transition: color 0.18s var(--ease); }
+  .foot-links a:hover { color: var(--signal); }
+}
+
+@layer utils {
+  .no-print { display: revert; }
+}
+
+@media (max-width: 560px) {
+  .cl-entry { grid-template-columns: 2rem minmax(0, 1fr); }
+  .cl-sha { grid-column: 2; }
+}
+
+/* ============================== print ==============================
+   Mostly a palette swap: every colour on the site is a token, so
+   redefining the tokens turns the whole thing into ink on white
+   without restating a single rule. What is left is hiding the chrome
+   and keeping entries off page boundaries.
+   ================================================================== */
+
+@media print {
+  :root {
+    --bg: #fff; --bg-raised: #fff; --bg-inset: #fff;
+    --line: #d4d4d8; --line-strong: #a1a1aa;
+    --fg: #000; --fg-dim: #26262b; --fg-mute: #55555e;
+    --signal: #000; --signal-ink: #fff; --signal-wash: transparent;
+  }
+
+  @page { margin: 14mm; }
+
+  html { scroll-behavior: auto; }
+  body { background: #fff; font-size: 10.5pt; line-height: 1.45; }
+
+  /* Chrome that means nothing on paper. */
+  .no-print, .nav, .cs-bar, .drawer, .burger, .proj-links, .hero-actions,
+  .foot-links, .gh, .plate, .dot, .figure { display: none !important; }
+
+  /* The reveal animation never runs when there is no scrolling, so without
+     this every element the observer has not reached prints blank. */
+  .rise { opacity: 1 !important; transform: none !important; }
+
+  .section { padding-block: 0.6rem; border-top: 0 !important; }
+  .section + .section { border-top: 1px solid var(--line) !important; }
+  .cs-hero { padding-top: 0; }
+  .cs-title { font-size: 20pt; margin-bottom: 0.5rem; }
+  .cs-lede { font-size: 10.5pt; margin-bottom: 1rem; max-width: none; }
+  .sec-title { font-size: 14pt; }
+
+  /* Nothing straddles a page break if it can be helped. */
+  .log-row, .cred, .st-row, .cl-entry, .metric { break-inside: avoid; }
+  .sec-head { break-after: avoid; }
+
+  .bullets li { font-size: 10pt; }
+  .footer { border-top: 1px solid var(--line); }
+
+  /* A background printed behind text costs ink and legibility. */
+  a { color: inherit; background-image: none !important; }
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Download, Mail, MapPin, Phone, Printer } from 'lucide-react';
+import { ArrowLeft, Download, Mail, MapPin, Phone } from 'lucide-react';
 import { CREDENTIALS, EXPERIENCE, PERSONAL, PROJECTS, STACK } from '../data/portfolioData';
 import { GithubIcon, LinkedinIcon } from '../components/Icons';
 
@@ -12,8 +12,10 @@ import { GithubIcon, LinkedinIcon } from '../components/Icons';
  * the homepage reads — so the two can never drift, and the PDF stays available
  * for anyone who wants a file to attach.
  *
- * Laid out to print: @media print in index.css drops the chrome and inverts to
- * ink on white, so Cmd-P produces something a recruiter can file.
+ * There is no Print button: the page runs to five sheets on paper, which is not
+ * a résumé anyone wants to receive. The PDF is the artefact to hand over. The
+ * @media print rules in index.css stay so that a browser's own print command
+ * still yields ink on white rather than a dark, half-blank page.
  */
 
 /** Projects worth a recruiter's attention; the rest live on the homepage. */
@@ -34,11 +36,6 @@ export const Resume: React.FC = () => (
           <ArrowLeft size={14} /> Back to portfolio
         </a>
         <div className="nav-cta">
-          {/* Progressive enhancement: without JS the browser's own print
-              command still works, so this is an extra, never the only way. */}
-          <button className="btn" onClick={() => window.print()}>
-            <Printer size={14} /> Print
-          </button>
           <a className="btn btn-signal" href={PERSONAL.resume} download>
             <Download size={14} /> PDF
           </a>

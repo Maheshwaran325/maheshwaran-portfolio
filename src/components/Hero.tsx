@@ -32,7 +32,7 @@ export const Hero: React.FC = () => (
 
         <p className="hero-lede">
           I build production systems with the parts most demos skip:{' '}
-          <strong>approval workflows engine</strong>, <strong>role-based access control</strong> and{' '}
+          <strong>approval workflow engines</strong>, <strong>role-based access control</strong> and{' '}
           <strong>multi-tenant architecture</strong>. Dashboards that turn AI output into something
           an operator can act on. <strong>LLM integrations</strong> that own the input rather than
           the output. Full-stack in the ordinary sense — React and TypeScript on the front, FastAPI

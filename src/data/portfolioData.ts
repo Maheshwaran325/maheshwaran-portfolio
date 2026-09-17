@@ -48,8 +48,6 @@ export const PERSONAL = {
   name: 'Maheshwaran A K',
   role: 'AI-native full-stack engineer',
   location: 'Salem, Tamil Nadu, India',
-  phone: '+91 96778 05622',
-  phoneHref: 'tel:+919677805622',
   email: 'maheshwaran325@gmail.com',
   status: 'Available for work',
   company: 'Bipolar Factory',

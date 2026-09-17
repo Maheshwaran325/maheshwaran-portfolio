@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Download, Mail, MapPin, Phone } from 'lucide-react';
+import { ArrowLeft, Download, Mail, MapPin } from 'lucide-react';
 import { CREDENTIALS, EXPERIENCE, PERSONAL, PROJECTS, STACK } from '../data/portfolioData';
 import { GithubIcon, LinkedinIcon } from '../components/Icons';
 
@@ -23,7 +23,6 @@ const SHORTLIST = PROJECTS.slice(0, 4);
 
 const CONTACT = [
   { icon: <Mail size={14} />, label: PERSONAL.email, href: `mailto:${PERSONAL.email}` },
-  { icon: <Phone size={14} />, label: PERSONAL.phone, href: PERSONAL.phoneHref },
   { icon: <GithubIcon size={14} />, label: 'github.com/Maheshwaran325', href: PERSONAL.github },
   { icon: <LinkedinIcon size={14} />, label: 'in/maheshwaranak', href: PERSONAL.linkedin },
 ];

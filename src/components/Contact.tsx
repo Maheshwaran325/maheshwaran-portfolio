@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Check, Copy, MapPin, Phone } from 'lucide-react';
+import { Check, Copy, MapPin } from 'lucide-react';
 import { PERSONAL } from '../data/portfolioData';
 import { GithubIcon, LinkedinIcon, XIcon } from './Icons';
 
@@ -71,13 +71,6 @@ export const Contact: React.FC = () => {
             <p className="k">X</p>
             <p className="v">
               <XIcon size={14} /> @gingfreecss325
-            </p>
-          </a>
-
-          <a className="contact-cell" href={PERSONAL.phoneHref}>
-            <p className="k">Phone</p>
-            <p className="v">
-              <Phone size={15} /> {PERSONAL.phone}
             </p>
           </a>
 

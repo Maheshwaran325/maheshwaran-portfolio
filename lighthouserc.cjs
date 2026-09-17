@@ -20,6 +20,7 @@
  *  and logs a React hydration error. Audit the URLs Netlify actually serves. */
 const URLS = [
   '/',
+  '/work/',
   '/work/institutional-platform/',
   '/work/guide2profit/',
   '/work/land2build/',

@@ -16,6 +16,7 @@ dashboards, and LLM and AI-agent integrations.
 ## Pages
 
 - [Portfolio](https://maheshwaran.dev/): Work history, selected projects, stack and contact details.
+- [What I build](https://maheshwaran.dev/work/): The work grouped by problem rather than by project — multi-tenant systems with role-based access control and configurable approval workflows; retail-analytics and operational dashboards; LLM and AI-agent integration. Each group states who it is for and links to the shipped evidence.
 - [Institutional Finance & Research Platform](https://maheshwaran.dev/work/institutional-platform/): Case study on a multi-tenant ERP running budgeting, expenditure and settlement for a 39-department institution — 330+ active users, ₹43.4 Cr of budget processed, 14+ months in production.
 - [Land2Build — case study](https://maheshwaran.dev/work/land2build/): A browser-only construction planner. An LLM parses the brief into a typed config; a deterministic binary space partition generates the floor plan, so the layout carries testable invariants — rooms stay in bounds and never overlap, checked across randomised runs.
 - [Guide2Profit — post-mortem](https://maheshwaran.dev/work/guide2profit/): Why a well-built financial-modelling SaaS found no market — founders delegate financial modelling rather than doing it themselves. Built with a friend, whose idea it was; shelved in 2024.

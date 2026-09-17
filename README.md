@@ -16,13 +16,14 @@ background (lowest ratio is 4.66:1).
 ```
 src/
   index.css              design tokens + every component style (cascade layers)
-  data/portfolioData.ts  single source of truth for all content
+  data/portfolioData.ts  single source of truth for the homepage and the résumé
+  data/workIndexData.ts  /work/ — the capability groups the case studies hang off
   hooks/
     useReveal.ts         scroll-in reveal for .rise elements
     useActiveSection.ts  nav highlighting
     usePrefetch.ts       warms a route's HTML on hover or focus
   components/            Nav, Hero, Metrics, Work, Projects, Stack, Credentials, Faq, Contact
-  pages/                 CaseStudy, Guide2Profit, Land2Build, Resume, Changelog, NotFound
+  pages/                 WorkIndex, CaseStudy, Guide2Profit, Land2Build, Resume, Changelog, NotFound
   assets/fonts/          self-hosted subsets, built by scripts/build-fonts.sh
   assets/avatar*.webp    hero portrait srcset, built by scripts/build-images.py
 public/
@@ -34,6 +35,14 @@ tests/                   Playwright suite; routes.ts is the list of published ro
 lighthouserc.cjs         the performance, a11y, SEO and byte budgets CI enforces
 .github/workflows/       CI on every push; the GitHub figures resync weekly
 ```
+
+`/work/` is an index of *capabilities*, not of projects. It exists because the URL did:
+`/work/land2build/` was reachable while `/work/` answered 404. Filling it with a list of
+project names would have been the obvious move and the less useful one — nobody searches
+for "Land2Build", they search for someone who can integrate an LLM. So each group leads
+with the problem and who has it, and treats the case studies as the evidence. Every figure
+on it also appears on the study it points at, deliberately: a claim that lives on exactly
+one page reads as unverified, to a reader and to a model.
 
 Three things are generated rather than written:
 

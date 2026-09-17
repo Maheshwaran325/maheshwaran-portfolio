@@ -8,6 +8,7 @@ import { Stack } from './components/Stack';
 import { Credentials } from './components/Credentials';
 import { Faq } from './components/Faq';
 import { Contact } from './components/Contact';
+import { WorkIndex } from './pages/WorkIndex';
 import { CaseStudy } from './pages/CaseStudy';
 import { Guide2Profit } from './pages/Guide2Profit';
 import { Land2Build } from './pages/Land2Build';
@@ -17,6 +18,7 @@ import { NotFound } from './pages/NotFound';
 import { useReveal } from './hooks/useReveal';
 import { usePrefetch } from './hooks/usePrefetch';
 
+export const WORK_INDEX_PATH = '/work';
 export const CASE_STUDY_PATH = '/work/institutional-platform';
 export const GUIDE2PROFIT_PATH = '/work/guide2profit';
 export const LAND2BUILD_PATH = '/work/land2build';
@@ -67,6 +69,8 @@ const Portfolio: React.FC = () => (
  */
 const TITLES: Record<string, string> = {
   '/': 'Maheshwaran A K — AI-Native Full-Stack Engineer',
+  [WORK_INDEX_PATH]:
+    'What I build — Multi-tenant systems, dashboards and LLM integration — Maheshwaran A K',
   [CASE_STUDY_PATH]:
     'Institutional Finance & Research Platform — Case study — Maheshwaran A K',
   [GUIDE2PROFIT_PATH]:
@@ -86,6 +90,7 @@ export const App: React.FC<{ path?: string }> = ({ path: initial }) => {
     document.title = TITLES[path] ?? 'Page not found — Maheshwaran A K';
   }, [path]);
 
+  if (path === WORK_INDEX_PATH) return <WorkIndex />;
   if (path === CASE_STUDY_PATH) return <CaseStudy />;
   if (path === GUIDE2PROFIT_PATH) return <Guide2Profit />;
   if (path === LAND2BUILD_PATH) return <Land2Build />;

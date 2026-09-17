@@ -31,10 +31,13 @@ export const Hero: React.FC = () => (
         </h1>
 
         <p className="hero-lede">
-          Full-stack in the ordinary sense: <strong>React and TypeScript</strong> on the front,{' '}
-          <strong>FastAPI and Node</strong> behind, <strong>Postgres and MySQL</strong> underneath.
-          At <strong>Bipolar Factory</strong> I build the retail-analytics command center — the
-          product layer around the AI systems, not the models themselves. Before that I founded{' '}
+          I build production systems with the parts most demos skip:{' '}
+          <strong>approval workflows engine</strong>, <strong>role-based access control</strong> and{' '}
+          <strong>multi-tenant architecture</strong>. Dashboards that turn AI output into something
+          an operator can act on. <strong>LLM integrations</strong> that own the input rather than
+          the output. Full-stack in the ordinary sense — React and TypeScript on the front, FastAPI
+          and Node behind, Postgres and MySQL underneath. At <strong>Bipolar Factory</strong> I
+          build the retail-analytics command center; before that I founded{' '}
           <strong>Statix.pro</strong> and took its products 0 → 1.
         </p>
 

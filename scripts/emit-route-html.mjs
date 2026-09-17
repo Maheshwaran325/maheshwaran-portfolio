@@ -48,6 +48,18 @@ const ROUTES = [
     sources: ['index.html', 'src/components', 'src/data/portfolioData.ts'],
   },
   {
+    path: 'work',
+    title: 'What I build — Multi-tenant systems, dashboards and LLM integration — Maheshwaran A K',
+    description:
+      'What Maheshwaran A K builds, grouped by problem rather than by project: multi-tenant systems with role-based access control and configurable approval workflows, retail-analytics and operational dashboards, and LLM and AI-agent integration \u2014 each with the shipped work behind it.',
+    image: `${SITE}/og.png`,
+    breadcrumb: 'Work',
+    // An index of capabilities is a page about what someone does, not an
+    // article about one of them.
+    schemaType: 'CollectionPage',
+    sources: ['src/pages/WorkIndex.tsx', 'src/data/workIndexData.ts'],
+  },
+  {
     path: 'work/institutional-platform',
     title: 'Institutional Finance & Research Platform — Case study — Maheshwaran A K',
     description:

@@ -74,7 +74,7 @@ export const Land2Build: React.FC = () => (
           <p>
             There is no server anywhere in that. Projects live in IndexedDB, the 3D runs on the
             GPU through Three.js, and the only things it reaches out to are a geocoder, a weather
-            API and a language model.
+            API and an <strong>LLM</strong>, served by Nebius AI Studio.
           </p>
         </div>
       </Chapter>
@@ -89,14 +89,14 @@ export const Land2Build: React.FC = () => (
             no rooms you can count, and no guarantee that the bedroom it drew fits on the plot.
           </p>
           <p>
-            So the model here has one narrow job: read a sentence like{' '}
-            <em>&ldquo;modern two-storey house with a flat roof&rdquo;</em> and return a{' '}
-            <strong>typed configuration</strong> — width, length, floors, roof type, wall material,
-            design style. That is a parsing problem, which is what language models are genuinely
-            good at.
+            So the <strong>LLM</strong> here has one narrow job. The whole prompt is a sentence
+            like <em>&ldquo;modern two-storey house with a flat roof&rdquo;</em>, and what comes
+            back is a <strong>typed configuration</strong> — width, length, floors, roof type,
+            wall material, design style. That is a parsing problem with a schema at the end of it,
+            which is the thing LLMs are genuinely good at.
           </p>
           <p>
-            Everything downstream of that config is ordinary deterministic code. The model never
+            Everything downstream of that config is ordinary deterministic code. The LLM never
             sees the geometry, never places a room and never decides a dimension. It converts
             English into a struct, and then it is done.
           </p>

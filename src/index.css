@@ -468,6 +468,35 @@
   .cred-d { color: var(--fg-dim); font-size: 0.95rem; margin-top: 0.6rem; max-width: 62ch; }
   .cred-m { font-family: var(--font-mono); font-size: 0.72rem; color: var(--fg-mute); margin-top: 0.7rem; }
 
+  .proj-more { margin-top: 2.5rem; color: var(--fg-dim); font-size: 0.95rem; }
+
+  /* ---------- /work capability groups ---------- */
+  /* The default .sec-title caps at 20ch, which is right for "Asked and
+     answered." and wrong for a capability named the way it gets searched. */
+  .cap-title { max-width: 26ch; }
+
+  .cap-for {
+    display: grid; grid-template-columns: 3.5rem minmax(0, 1fr);
+    gap: 0.75rem; align-items: baseline;
+    margin-bottom: 1.6rem; padding-left: 1rem;
+    border-left: 2px solid var(--signal);
+    color: var(--fg-dim); font-size: 0.98rem; max-width: 70ch;
+  }
+  .cap-for span {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-mute);
+  }
+
+  .cap-ev { margin-top: 2rem; display: grid; gap: 1rem; max-width: 74ch; }
+  .cap-ev li {
+    padding-block: 0.9rem; border-top: 1px solid var(--line);
+    color: var(--fg-dim); font-size: 0.95rem; line-height: 1.6;
+  }
+  .cap-ev li:last-child { border-bottom: 1px solid var(--line); }
+  .cap-ev strong { color: var(--fg); font-weight: 500; }
+  .cap-ev-link { display: inline-block; margin-left: 0.5rem; white-space: nowrap; }
+  .cap-ev + .stack-line { margin-top: 1.6rem; }
+
   /* ---------- faq ---------- */
   /* Wider question column than .cred's label track: these are sentences, not
      one-word kinds, and at 200px every one of them wrapped to four lines. */
@@ -557,6 +586,7 @@
 }
 
 @media (max-width: 560px) {
+  .cap-for { grid-template-columns: minmax(0, 1fr); gap: 0.35rem; }
   .contact-grid { grid-template-columns: minmax(0, 1fr); }
   .metrics { grid-template-columns: minmax(0, 1fr); }
   .metric { border-left: 0 !important; padding-left: 0 !important; padding-right: 0; }
@@ -731,7 +761,7 @@
   .sec-title { font-size: 14pt; }
 
   /* Nothing straddles a page break if it can be helped. */
-  .log-row, .cred, .faq, .st-row, .cl-entry, .metric { break-inside: avoid; }
+  .log-row, .cred, .faq, .cap-ev li, .st-row, .cl-entry, .metric { break-inside: avoid; }
   .sec-head { break-after: avoid; }
 
   .bullets li { font-size: 10pt; }

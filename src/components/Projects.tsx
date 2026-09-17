@@ -9,7 +9,7 @@ export const Projects: React.FC = () => (
     index="02"
     label="Selected work"
     title="Things people actually use."
-    note="Four builds that went to production and stayed there. Numbers are real and measured, not estimated."
+    note="Five builds that went to production and stayed there. Numbers are real and measured, not estimated."
   >
     {PROJECTS.map((p, i) => (
       <article className="proj rise" key={p.title} data-delay={i * 60}>
@@ -66,5 +66,12 @@ export const Projects: React.FC = () => (
         </div>
       </article>
     ))}
+
+    <p className="proj-more rise">
+      Looking for a particular kind of work rather than a particular project?{' '}
+      <a className="link-u" href="/work/">
+        What I build <ArrowUpRight size={14} style={{ display: 'inline', verticalAlign: '-2px' }} />
+      </a>
+    </p>
   </Section>
 );

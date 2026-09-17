@@ -173,8 +173,8 @@ export const Guide2Profit: React.FC = () => (
             produces a number.
           </p>
           <p>
-            This was deliberate. A language model that confidently miscalculates a break-even
-            point is worse than no assistant at all, because the output looks exactly as
+            This was deliberate. An <strong>LLM</strong> that confidently miscalculates a
+            break-even point is worse than no assistant at all, because the output looks exactly as
             authoritative as the correct one. The deterministic engines own every figure in the
             product; the model owns the explanation and nothing else.
           </p>

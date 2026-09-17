@@ -26,6 +26,12 @@ export const ROUTES: Route[] = [
     heading: /AI-native\s*full-stack\s*engineer\./,
   },
   {
+    path: '/work/',
+    title: 'What I build — Multi-tenant systems, dashboards and LLM integration — Maheshwaran A K',
+    marker: 'roles data rather than code',
+    heading: /What I build/,
+  },
+  {
     path: '/work/institutional-platform/',
     title: 'Institutional Finance & Research Platform — Case study — Maheshwaran A K',
     marker: 'approval engine',

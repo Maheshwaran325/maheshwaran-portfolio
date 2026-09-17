@@ -94,6 +94,7 @@ export const Contact: React.FC = () => {
         <footer className="footer">
           <span>© {new Date().getFullYear()} Maheshwaran A K</span>
           <nav className="foot-links" aria-label="Site">
+            <a href="/work/">Work</a>
             <a href="/resume/">Résumé</a>
             <a href="/changelog/">Changelog</a>
             <a

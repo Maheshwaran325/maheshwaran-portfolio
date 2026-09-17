@@ -21,7 +21,7 @@ src/
     useReveal.ts         scroll-in reveal for .rise elements
     useActiveSection.ts  nav highlighting
     usePrefetch.ts       warms a route's HTML on hover or focus
-  components/            Nav, Hero, Metrics, Work, Projects, Stack, Credentials, Contact
+  components/            Nav, Hero, Metrics, Work, Projects, Stack, Credentials, Faq, Contact
   pages/                 CaseStudy, Guide2Profit, Land2Build, Resume, Changelog, NotFound
   assets/fonts/          self-hosted subsets, built by scripts/build-fonts.sh
   assets/avatar*.webp    hero portrait srcset, built by scripts/build-images.py
@@ -35,7 +35,7 @@ lighthouserc.cjs         the performance, a11y, SEO and byte budgets CI enforces
 .github/workflows/       CI on every push; the GitHub figures resync weekly
 ```
 
-Two routes are generated rather than written:
+Three things are generated rather than written:
 
 - **`/resume`** renders from `portfolioData.ts`, so the page and the PDF cannot drift.
   It is laid out to print — `@media print` in `index.css` swaps the tokens to ink on
@@ -43,6 +43,13 @@ Two routes are generated rather than written:
 - **`/changelog`** is the repository's own `git log`, read at build time by the
   `changelog` plugin in `vite.config.ts` and handed to the app as `virtual:changelog`.
   Writing a commit message is writing the entry; there is nothing to maintain.
+- **The FAQ** is authored once in `portfolioData.ts` and published three ways: rendered
+  on the homepage, as `FAQPage` structured data, and as text in `llms.txt`, where
+  `emit-route-html.mjs` fills the `<!-- FAQ -->` marker. It exists because an AI
+  assistant answering "who can build X" quotes a question-and-answer pair far more
+  readily than it infers one from prose — so the answers are written to survive being
+  lifted out of the page, each carrying its own numbers. `tests/publish.spec.ts` asserts
+  the three copies still say the same thing.
 
 **To change content, edit `src/data/portfolioData.ts` only.** Components read from it.
 Highlight strings may contain `<strong>` for emphasis; they are rendered as HTML, so keep
@@ -85,6 +92,8 @@ sitemap, the 404. It covers:
   writes is the title React sets after hydration;
 - `dist/` and the sitemap contain exactly the routes in `tests/routes.ts`, every
   internal link resolves to a file that exists, and `llms.txt` has not drifted;
+- the FAQ rendered on the homepage, the `FAQPage` JSON-LD and the `## FAQ` section of
+  `llms.txt` list the same questions in the same order;
 - no WCAG 2.1 AA violations on any route, at desktop and phone width — which is what
   keeps the contrast claim above honest;
 - the reveal animation, the print stylesheet, prefetch-on-hover and the clipboard.

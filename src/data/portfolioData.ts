@@ -44,6 +44,13 @@ export interface Credential {
   href?: string;
 }
 
+export interface FaqItem {
+  /** Phrased the way someone searching would ask it, not the way a CV states it. */
+  q: string;
+  /** May contain <strong>; rendered as HTML, so author it here and nowhere else. */
+  a: string;
+}
+
 export const PERSONAL = {
   name: 'Maheshwaran A K',
   role: 'AI-native full-stack engineer',
@@ -62,6 +69,7 @@ export const NAV = [
   { label: 'projects', href: '#projects' },
   { label: 'stack', href: '#stack' },
   { label: 'credentials', href: '#credentials' },
+  { label: 'faq', href: '#faq' },
   { label: 'contact', href: '#contact' },
 ] as const;
 
@@ -210,6 +218,27 @@ export const PROJECTS: Project[] = [
   },
 ];
 
+/**
+ * What the work *is*, in the words someone looking for it would use.
+ *
+ * The stack lists name tools; nobody searches for a hire by typing "CASL".
+ * These are the capability phrases that sit alongside them in the Person's
+ * knowsAbout, so the structured data carries both halves of the vocabulary —
+ * what I use, and what it is for.
+ */
+export const CAPABILITIES = [
+  'Multi-tenant SaaS architecture',
+  'Role-based access control (RBAC)',
+  'Approval workflow engines',
+  'Enterprise ERP development',
+  'Retail analytics dashboards',
+  'Data visualisation and KPI reporting',
+  'LLM application development',
+  'AI agent systems',
+  'REST API design',
+  'Full-stack product engineering',
+] as const;
+
 export const STACK: StackGroup[] = [
   { key: 'Frontend', items: ['React', 'Next.js', 'TypeScript', 'Redux Toolkit', 'MUI', 'Recharts', 'Storybook', 'Streamlit'] },
   { key: 'Backend', items: ['Node.js', 'Express', 'Python', 'FastAPI', 'Flask', 'Django', 'REST APIs', 'Orval'] },
@@ -246,5 +275,57 @@ export const CREDENTIALS: Credential[] = [
     title: 'B.Tech, Information Technology',
     detail: 'K.S. Rangasamy College of Technology.',
     meta: '2019 — 2023 · CGPA 8.67 / 10',
+  },
+];
+
+/**
+ * Answers to what people actually type, kept in the vocabulary they type it in.
+ *
+ * Two audiences read this: a person skimming, and a language model that has
+ * retrieved the page and needs to lift a claim out of it. That second reader
+ * is why each answer is self-contained and carries its own numbers — an
+ * answer extracted away from this page has to still stand up on its own.
+ *
+ * scripts/emit-route-html.mjs also publishes these as FAQPage structured data.
+ * Not for Google rich results, which no longer show FAQ markup for a site like
+ * this one, but because it is the cleanest machine-readable form the claims
+ * have: a question and its answer, already paired.
+ */
+export const FAQ: FaqItem[] = [
+  {
+    q: 'What kind of work are you available for?',
+    a: 'Both full-time engineering roles and freelance or contract projects, <strong>remote only</strong>. I am currently at Bipolar Factory, so contract work runs alongside that — scoped pieces rather than full-time-equivalent commitments. Email is the fastest way to reach me and I reply within a day.',
+  },
+  {
+    q: 'Do you build multi-tenant systems with role-based access control?',
+    a: 'Yes — it is the work I have the most production evidence for. I designed and built a <strong>multi-tenant ERP</strong> for a 39-department institution: a <strong>9-role RBAC approval engine</strong> driving multi-stage budget, finance and expenditure workflows, with CASL-based permissions and JWT/OAuth authentication. It has been live 14+ months, serves 330+ active users, and has processed 1,000+ proposals worth ₹43.4 Cr.',
+  },
+  {
+    q: 'Can you build a custom approval or workflow engine?',
+    a: 'Yes, and I have built two in different shapes. The institutional ERP runs a <strong>configurable multi-stage approval engine</strong> where roles are data rather than code, so a new approval chain is configuration and not a deploy. At Bipolar Factory I built an end-to-end <strong>workflow and scheduling system</strong> on FastAPI and PostgreSQL covering recurring, one-off and milestone schedules, TAT cascades, KPI aggregation and manager approval flows.',
+  },
+  {
+    q: 'Do you build custom analytics dashboards?',
+    a: 'Yes. At Bipolar Factory I build the front end and APIs for an enterprise <strong>retail-analytics command center</strong> — footfall heatmaps, demographics and ANPR views that store operators act on. I also published the component library underneath it as an internal npm package: <strong>MUI and Recharts</strong> KPI cards, heatmaps, widget filters and custom tooltips, documented in Storybook.',
+  },
+  {
+    q: 'Do you work with LLMs and AI agents?',
+    a: 'Yes, at the product layer — I build the systems around models rather than training the models themselves. In Land2Build an LLM parses a plain-language building brief into a <strong>typed config</strong> that then drives deterministic geometry, so the generated floor plan can be tested. A multi-agent debate platform runs two LLM agents through structured argument and rebuttal using <strong>function calling</strong>. I work with LangChain, LangGraph, LangFuse, GPT APIs and Nebius AI Studio.',
+  },
+  {
+    q: 'What is your stack?',
+    a: '<strong>React, TypeScript and Next.js</strong> on the front; <strong>FastAPI, Node and Express</strong> behind; <strong>PostgreSQL and MySQL</strong> underneath. Around that: Redux Toolkit, MUI, Recharts and Storybook; S3 and MinIO for object storage; JWT, OAuth, Auth0 and CASL for authentication and permissions; GitHub Actions for CI/CD.',
+  },
+  {
+    q: 'Where are you based, and do you work remotely?',
+    a: 'Salem, Tamil Nadu, India, working <strong>India Standard Time (UTC+5:30)</strong>. Remote only — my current role is remote and I am not looking to relocate. IST gives a full working morning of overlap with Europe and the early hours with US Eastern.',
+  },
+  {
+    q: 'How much production experience do you have?',
+    a: '<strong>3+ years</strong> shipping production software across three roles: Bipolar Factory today, Statix.pro before it as founder from 2023 to 2025, and an internship at Infoview Technologies. The longest-running thing I have built is the institutional ERP — <strong>14+ months live</strong> and still in daily use. I also have peer-reviewed research published by <strong>IEEE</strong> on AI-driven recruitment matching.',
+  },
+  {
+    q: 'Is any of your work open source?',
+    a: 'Yes. Land2Build, the multi-agent debate platform and this site itself are all public on GitHub at <strong>@Maheshwaran325</strong>. The institutional ERP and the Bipolar Factory products are client and employer work, so those have written case studies rather than repositories.',
   },
 ];

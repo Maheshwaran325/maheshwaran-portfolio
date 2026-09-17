@@ -468,6 +468,19 @@
   .cred-d { color: var(--fg-dim); font-size: 0.95rem; margin-top: 0.6rem; max-width: 62ch; }
   .cred-m { font-family: var(--font-mono); font-size: 0.72rem; color: var(--fg-mute); margin-top: 0.7rem; }
 
+  /* ---------- faq ---------- */
+  /* Wider question column than .cred's label track: these are sentences, not
+     one-word kinds, and at 200px every one of them wrapped to four lines. */
+  .faq {
+    display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.3fr);
+    gap: clamp(1rem, 4vw, 3rem);
+    padding-block: 1.6rem; border-top: 1px solid var(--line);
+  }
+  .faq:last-child { border-bottom: 1px solid var(--line); }
+  .faq-q { font-size: 1.05rem; font-weight: 500; letter-spacing: -0.015em; line-height: 1.4; text-wrap: balance; }
+  .faq-a { color: var(--fg-dim); font-size: 0.95rem; line-height: 1.65; max-width: 62ch; }
+  .faq-a strong { color: var(--fg); font-weight: 500; }
+
   /* ---------- contact ---------- */
   .mailto {
     display: inline-block;
@@ -537,7 +550,7 @@
     overflow: hidden; clip-path: inset(50%); white-space: nowrap;
   }
   .burger { display: block; }
-  .log-row, .proj, .st-row, .cred { grid-template-columns: minmax(0, 1fr); gap: 1.1rem; }
+  .log-row, .proj, .st-row, .cred, .faq { grid-template-columns: minmax(0, 1fr); gap: 1.1rem; }
   .log-when, .proj-idx { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; }
   .log-when .now, .proj-idx b { margin-bottom: 0; }
   .log-when p { margin-top: 0; }
@@ -718,7 +731,7 @@
   .sec-title { font-size: 14pt; }
 
   /* Nothing straddles a page break if it can be helped. */
-  .log-row, .cred, .st-row, .cl-entry, .metric { break-inside: avoid; }
+  .log-row, .cred, .faq, .st-row, .cl-entry, .metric { break-inside: avoid; }
   .sec-head { break-after: avoid; }
 
   .bullets li { font-size: 10pt; }

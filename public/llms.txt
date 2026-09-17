@@ -6,7 +6,12 @@
 
 Currently at Bipolar Factory, building the product layer around retail-analytics
 AI systems. Previously founded Statix.pro and took its products 0 to 1.
-3+ years shipping production software.
+3+ years shipping production software. Available for full-time roles and
+freelance contracts, remote only, from India Standard Time (UTC+5:30).
+
+Builds multi-tenant systems with role-based access control, configurable
+approval workflow engines, enterprise ERP software, retail-analytics and KPI
+dashboards, and LLM and AI-agent integrations.
 
 ## Pages
 
@@ -16,6 +21,8 @@ AI systems. Previously founded Statix.pro and took its products 0 to 1.
 - [Guide2Profit — post-mortem](https://maheshwaran.dev/work/guide2profit/): Why a well-built financial-modelling SaaS found no market — founders delegate financial modelling rather than doing it themselves. Built with a friend, whose idea it was; shelved in 2024.
 - [Résumé](https://maheshwaran.dev/resume/): Full work history, selected projects, stack and credentials as a page. The same content as a file: [PDF](https://maheshwaran.dev/Maheshwaran-A-K-Resume.pdf).
 - [Changelog](https://maheshwaran.dev/changelog/): Every change to this site, read from its git history at build time.
+
+<!-- FAQ -->
 
 ## Elsewhere
 

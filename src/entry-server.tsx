@@ -12,7 +12,7 @@ import { StrictMode } from 'react';
 import { renderToString } from 'react-dom/server';
 import App from './App';
 
-export { PERSONAL, EXPERIENCE, PROJECTS } from './data/portfolioData';
+export { PERSONAL, EXPERIENCE, PROJECTS, FAQ, CAPABILITIES } from './data/portfolioData';
 
 export function render(path: string): string {
   return renderToString(

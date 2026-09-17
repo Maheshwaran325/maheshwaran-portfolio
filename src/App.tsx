@@ -6,6 +6,7 @@ import { Work } from './components/Work';
 import { Projects } from './components/Projects';
 import { Stack } from './components/Stack';
 import { Credentials } from './components/Credentials';
+import { Faq } from './components/Faq';
 import { Contact } from './components/Contact';
 import { CaseStudy } from './pages/CaseStudy';
 import { Guide2Profit } from './pages/Guide2Profit';
@@ -49,6 +50,7 @@ const Portfolio: React.FC = () => (
       <Projects />
       <Stack />
       <Credentials />
+      <Faq />
       <Contact />
     </main>
   </>

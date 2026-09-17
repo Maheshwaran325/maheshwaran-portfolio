@@ -21,7 +21,7 @@ export const Contact: React.FC = () => {
       <div className="shell">
         <header className="sec-head rise">
           <p className="sec-index">
-            <b>05</b> Contact
+            <b>06</b> Contact
           </p>
           <h2 className="sec-title">Let's build something.</h2>
           <p className="sec-note">

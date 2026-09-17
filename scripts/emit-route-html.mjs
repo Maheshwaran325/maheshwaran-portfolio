@@ -18,7 +18,8 @@ const DIST = 'dist';
 const SITE = 'https://maheshwaran.dev';
 const NOW = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
 
-const { render, PERSONAL, EXPERIENCE, PROJECTS } = await import('../dist-ssr/entry-server.js');
+const { render, PERSONAL, EXPERIENCE, PROJECTS, FAQ, CAPABILITIES } =
+  await import('../dist-ssr/entry-server.js');
 
 /**
  * When the route's content last changed, so sitemap lastmod describes the
@@ -50,7 +51,7 @@ const ROUTES = [
     path: 'work/institutional-platform',
     title: 'Institutional Finance & Research Platform — Case study — Maheshwaran A K',
     description:
-      'How I designed and built a multi-tenant ERP running budgeting, expenditure and settlement for a 39-department institution: one configurable approval engine, roles as data, and an audit trail money can be traced through.',
+      'How I designed and built a multi-tenant ERP with role-based access control (RBAC) running budgeting, expenditure and settlement for a 39-department institution: a 9-role configurable approval workflow engine, roles as data, and an audit trail money can be traced through.',
     image: `${SITE}/og-case-study.png`,
     breadcrumb: 'Institutional Finance & Research Platform',
     sources: ['src/pages/CaseStudy.tsx', 'src/data/caseStudyData.ts'],
@@ -117,7 +118,27 @@ function personGraph() {
         name: `${PERSONAL.name} — ${PERSONAL.role}`,
         dateModified: lastModified(ROUTES[0].sources),
         mainEntity: { '@id': id },
+        hasPart: { '@id': `${SITE}/#faq` },
         inLanguage: 'en',
+      },
+      // A second *page* type on one URL is ambiguous — is this a profile or an
+      // FAQ? So the questions are their own node, linked from the profile by
+      // hasPart, which is what schema.org's own FAQ-within-a-page example does.
+      // Google stopped showing FAQ rich results for sites like this one in
+      // 2023; this is here because it is the cleanest machine-readable form
+      // the claims have, for the crawlers that read structured data and quote.
+      {
+        '@type': 'FAQPage',
+        '@id': `${SITE}/#faq`,
+        url: `${SITE}/#faq`,
+        name: `Frequently asked questions — ${PERSONAL.name}`,
+        about: { '@id': id },
+        inLanguage: 'en',
+        mainEntity: FAQ.map((item) => ({
+          '@type': 'Question',
+          name: item.q,
+          acceptedAnswer: { '@type': 'Answer', text: strip(item.a) },
+        })),
       },
       {
         '@type': 'Person',
@@ -144,12 +165,12 @@ function personGraph() {
           '@type': 'CollegeOrUniversity',
           name: 'K.S. Rangasamy College of Technology',
         },
-        knowsAbout: [...new Set(EXPERIENCE.flatMap((job) => job.stack))],
+        knowsAbout: [...CAPABILITIES, ...new Set(EXPERIENCE.flatMap((job) => job.stack))],
         hasOccupation: {
           '@type': 'Occupation',
           name: 'Full-Stack Software Engineer',
           occupationLocation: { '@type': 'City', name: 'Salem' },
-          skills: [...new Set(EXPERIENCE.flatMap((job) => job.stack))].join(', '),
+          skills: [...CAPABILITIES, ...new Set(EXPERIENCE.flatMap((job) => job.stack))].join(', '),
         },
         sameAs: [PERSONAL.github, PERSONAL.linkedin, PERSONAL.x],
       },
@@ -331,3 +352,23 @@ ${ROUTES.map(
 `;
 await writeFile(join(DIST, 'sitemap.xml'), sitemap, 'utf8');
 console.log(`sitemap.xml lists ${ROUTES.length} urls`);
+
+// --- llms.txt: the FAQ, generated ------------------------------------------
+// The rest of llms.txt is hand-written prose, but the answers also live in
+// portfolioData.ts and render on the homepage. Two hand-maintained copies of
+// the same nine answers is two copies that disagree within a month, so this
+// one is filled from the source the page uses. Nothing to keep in sync.
+{
+  const file = join(DIST, 'llms.txt');
+  const llms = await readFile(file, 'utf8');
+  const MARKER = '<!-- FAQ -->';
+  if (!llms.includes(MARKER)) throw new Error('no <!-- FAQ --> marker in llms.txt');
+
+  const strip = (html) => html.replace(/<[^>]+>/g, '');
+  const faq = ['## FAQ', '', ...FAQ.flatMap((item) => [`### ${item.q}`, '', strip(item.a), ''])]
+    .join('\n')
+    .trimEnd();
+
+  await writeFile(file, llms.replace(MARKER, faq), 'utf8');
+  console.log(`llms.txt carries ${FAQ.length} answers`);
+}

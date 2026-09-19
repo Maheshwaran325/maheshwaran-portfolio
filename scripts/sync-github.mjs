@@ -10,7 +10,11 @@
  *
  * Stars and forks are omitted on purpose. They measure other people's
  * attention, not the work, and next to "₹43.4 Cr processed" they read as a
- * downgrade. Language mix and activity corroborate the stack claims instead.
+ * downgrade. The language mix corroborates the stack claims instead.
+ *
+ * A last-push date is omitted for a different reason: this repo is one of the
+ * repos it measured, so the sync's own commit moved the figure it had just
+ * written, and the weekly job re-committed it forever on an empty diff.
  */
 import { readFile, writeFile } from 'node:fs/promises';
 
@@ -50,18 +54,11 @@ const languages = Object.entries(byLanguage)
   .sort((a, b) => b[1] - a[1])
   .map(([name, count]) => ({ name, count }));
 
-const latestPush = repos
-  .map((repo) => repo.pushed_at)
-  .filter(Boolean)
-  .sort()
-  .at(-1);
-
 const figures = {
   user: USER,
   url: `https://github.com/${USER}`,
   publicRepos: repos.length,
   languages,
-  lastPush: latestPush?.slice(0, 10) ?? null,
 };
 
 /**
@@ -77,12 +74,10 @@ const unchanged =
   previous && JSON.stringify({ ...previous, syncedAt: undefined }) === JSON.stringify({ ...figures, syncedAt: undefined });
 
 if (unchanged) {
-  console.log(`${OUT}: unchanged (${figures.publicRepos} repos, last push ${figures.lastPush}).`);
+  console.log(`${OUT}: unchanged (${figures.publicRepos} repos).`);
   process.exit(0);
 }
 
 const stats = { ...figures, syncedAt: new Date().toISOString().slice(0, 10) };
 await writeFile(OUT, `${JSON.stringify(stats, null, 2)}\n`, 'utf8');
-console.log(
-  `${OUT}: ${stats.publicRepos} repos, ${languages.length} languages, last push ${stats.lastPush}`,
-);
+console.log(`${OUT}: ${stats.publicRepos} repos, ${languages.length} languages`);

@@ -3,18 +3,12 @@ import { ArrowUpRight } from 'lucide-react';
 import { GithubIcon } from './Icons';
 import stats from '../data/githubStats.json';
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-/** Formatted by hand: toLocaleDateString differs between Node and the browser,
- *  which would desync the prerendered markup from the hydrated one. */
-function formatDay(iso: string): string {
-  const [year, month, day] = iso.split('-');
-  return `${Number(day)} ${MONTHS[Number(month) - 1]} ${year}`;
-}
-
 /**
- * Language mix and activity, synced by `npm run sync:github`. No stars or
- * followers: they measure other people's attention rather than the work.
+ * Language mix across the public repos, synced by `npm run sync:github`.
+ *
+ * No stars or followers: they measure other people's attention rather than
+ * the work. No last-push date either — this repo was one of the repos it
+ * measured, so every sync moved the figure it had just written.
  */
 export const GithubStats: React.FC = () => {
   const total = stats.languages.reduce((sum, lang) => sum + lang.count, 0);
@@ -48,8 +42,7 @@ export const GithubStats: React.FC = () => {
       </p>
 
       <p className="stack-line">
-        {stats.publicRepos} original repos <i>/</i> forks and archives excluded <i>/</i> last push{' '}
-        {formatDay(stats.lastPush)}
+        {stats.publicRepos} original repos <i>/</i> forks and archives excluded
       </p>
     </div>
   );

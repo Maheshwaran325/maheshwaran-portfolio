@@ -1,24 +1,16 @@
 {
   "user": "Maheshwaran325",
   "url": "https://github.com/Maheshwaran325",
-  "publicRepos": 13,
+  "publicRepos": 10,
   "languages": [
-    {
-      "name": "TypeScript",
-      "count": 4
-    },
     {
       "name": "Python",
       "count": 4
     },
     {
-      "name": "JavaScript",
-      "count": 2
-    },
-    {
-      "name": "HTML",
-      "count": 1
+      "name": "TypeScript",
+      "count": 3
     }
   ],
-  "syncedAt": "2026-09-19"
+  "syncedAt": "2026-10-05"
 }
